@@ -1,0 +1,62 @@
+---
+import { getCollection } from "astro:content";
+import TeaserSection from "./TeaserSection.astro";
+
+const allDependencies = await getCollection("dependencies");
+---
+
+<section class="bg-slate-100 mb-8">
+    <div
+        class="mx-auto max-w-screen-xl px-4 py-12 sm:px-6 md:py-16 lg:px-8 drop-shadow-xl bg-white rounded gradient"
+    >
+        <input type="text" class="search border w-full px-2 py-4" placeholder="Search" />
+        <p class="my-2 text-sm italic">Searching {allDependencies.length} entries</p>
+        <div class="flex flex-col space-y-4">
+            {
+                allDependencies.map(dependency => (
+                    <div class="package cursor-pointer hidden">
+                        <a
+                            class="underline decoration-slate-300 hover:decoration-pink-500 hover:font-semibold"
+                            href={`smell/${dependency.slug}`}
+                        >
+                            {dependency.data.name}
+                        </a>
+                    </div>
+                ))
+            }
+            <div class="no-results italic hidden">No results</div>
+        </div>
+        <TeaserSection />
+    </div>
+</section>
+
+<script>
+    const packages = document.querySelectorAll<HTMLAnchorElement>(".package");
+    const noResults = document.querySelector<HTMLDivElement>(".no-results");
+
+    document.querySelector<HTMLInputElement>(".search")!.addEventListener("keyup", event => {
+        const query = (event.target as HTMLInputElement).value.toLowerCase();
+        let foundResults = false;
+
+        if (query.trim().length === 0) {
+            packages.forEach(pkg => pkg.classList.add("hidden"));
+            noResults!.classList.add("hidden");
+            return;
+        }
+
+        packages.forEach(pkg => {
+            if (pkg.innerText.toLowerCase().includes(query)) {
+                pkg.classList.remove("hidden");
+                foundResults = true;
+            } else {
+                pkg.classList.add("hidden");
+            }
+        });
+
+        if (foundResults) {
+            noResults!.classList.add("hidden");
+        } else {
+            noResults!.classList.remove("hidden");
+        }
+    });
+</script>

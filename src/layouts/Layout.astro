@@ -1,0 +1,36 @@
+---
+const { title } = Astro.props;
+---
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>{title}</title>
+    </head>
+    <body class="bg-slate-100">
+        <header class="mb-8">
+            <div class="bg-white mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-8 lg:px-8">
+                <div class="sm:flex sm:items-center sm:justify-between">
+                    <div class="text-center sm:text-left">
+                        <a class="cursor-pointer" href="/"
+                            ><h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">
+                                <span class="text-blue-500 text-5xl">NPM Smell 🍑💨</span>
+                            </h1></a
+                        >
+                        <p class="mt-1.5 text-gray-500">NPM is smelling and we need to fix it</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <slot />
+        <footer class="bg-white mx-auto max-w-screen-xl px-4 py-2">
+            <p class="text-sm text-center">
+                <a
+                    class="underline decoration-pink-500 decoration-2 underline-offset-2"
+                    href="https://twitter.com/tmkndev">tmkn</a
+                >
+            </p>
+        </footer>
+    </body>
+</html>

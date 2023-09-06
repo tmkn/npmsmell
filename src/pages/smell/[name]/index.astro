@@ -1,0 +1,40 @@
+---
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+
+import Layout from "../../../layouts/Layout.astro";
+import DetailCard from "../../../components/DetailCard.astro";
+import type { DependencyType } from "../../../content/config";
+// import CompatTable from "../../../components/CompatTable.astro";
+
+interface Props {
+    entry: CollectionEntry<"dependencies">;
+    type: DependencyType;
+}
+
+export async function getStaticPaths() {
+    const allDependencies = await getCollection("dependencies");
+
+    return allDependencies.map(entry => ({
+        params: { name: entry.data.name },
+        props: { entry, type: entry.data.type }
+    }));
+}
+
+// const { name } = Astro.params;
+const { entry } = Astro.props;
+const { Content /*remarkPluginFrontmatter*/ } = await entry.render();
+---
+
+<Layout title="Home Page">
+    <!-- <div>Testing {name}!</div>
+    <p>{entry.data.randomFact} a</p>
+    <pre>{JSON.stringify(remarkPluginFrontmatter, null, 4)}</pre> -->
+    <DetailCard title={entry.data.name} tag={entry.data.type} data={entry.data} />
+    <!-- {showCompatibilityTable && <CompatTable implementation={implementation} /> -->
+    <div class="bg-white mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 mb-8">
+        <article class="prose max-w-none">
+            <Content />
+        </article>
+    </div>
+</Layout>

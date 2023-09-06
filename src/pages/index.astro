@@ -1,0 +1,47 @@
+---
+import Search from "../components/Search.astro";
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+    <Search />
+    <div class="bg-white mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 mb-8">
+        <article class="prose max-w-none">
+            <h2>About</h2>
+            <p>
+                NPM Smell's ultimate goal is to minimize the impact of supply chain attacks in NPM.
+            </p>
+            <p>
+                It tries to do so by highlighting trivial or obsolete dependencies with high
+                download numbers so that package maintainers can act and remove those dependencies.
+            </p>
+            <h2>Why?</h2>
+            <p>
+                Security. NPM contains a lot of trivial or obsolete packages. Yet they are still
+                being downloaded by millions. This makes them a prime candidate for the next supply
+                chain attack.
+            </p>
+            <p>
+                A popular attack vector is taking over those packages and updating them with
+                malicious code.
+            </p>
+            <!-- <p>
+                Trivial and outdated packages are a good target for this kind of attack especially
+                if they also have high download numbers.
+            </p> -->
+            <h3>What are trivial or obsolete packages?</h3>
+            <h4>Trivial</h4>
+            <p>
+                Trivial packages are packages that should be common knowledge for any JavaScript
+                developer. Like checking for an array or checking if a number is odd. While the
+                functionality is often trivial they sometimes come with additional dependencies.
+                Unnecessarily increasing the attack surface.
+            </p>
+            <h4>Obsolete</h4>
+            <p>
+                Obsolete packages are packages that are not needed anymore. They are obsolete
+                because the functionality they provide is now supported by the language itself.
+            </p>
+        </article>
+    </div>
+</Layout>

@@ -1,0 +1,9 @@
+---
+export function getStaticPaths() {
+    return [{ params: { scope: "a", name: "a" } }, { params: { scope: "bar", name: "b" } }];
+}
+
+const { scope, name } = Astro.params;
+---
+
+<div>Testing {scope}/{name}!</div>
