@@ -5,6 +5,10 @@ date: 2013-05-13
 version: 0.11.2
 ---
 
+## About
+
+Checks if a path is absolute.
+
 To check if a path is absolute, you can use the builtin Node.js method [`path.isAbsolute`](https://nodejs.org/api/path.html#path_path_isabsolute_path):
 
 ```js
