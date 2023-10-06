@@ -1,28 +1,30 @@
 {
-  "name": "npmsmell",
-  "type": "module",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro",
-    "prettier": "prettier --write \"{src,pages}/**/{*.ts,*.tsx,*.css,*.astro,*.md,*.mdx}\""
-  },
-  "dependencies": {
-    "@astrojs/tailwind": "^5.0.2",
-    "@mdn/browser-compat-data": "^5.3.15",
-    "@tmkn/packageanalyzer": "^0.9.14",
-    "astro": "^3.3.0",
-    "dayjs": "^1.11.9",
-    "lodash": "^4.17.21",
-    "tailwindcss": "^3.3.3"
-  },
-  "devDependencies": {
-    "@tailwindcss/typography": "^0.5.10",
-    "@types/lodash": "^4.14.198",
-    "prettier": "^3.0.3",
-    "prettier-plugin-astro": "^0.12.0"
-  }
+    "name": "npmsmell",
+    "type": "module",
+    "version": "0.0.1",
+    "scripts": {
+        "dev": "astro dev",
+        "start": "astro dev",
+        "build": "astro check && astro build",
+        "preview": "astro preview",
+        "astro": "astro",
+        "prettier": "prettier --write \"{src,pages}/**/{*.ts,*.tsx,*.css,*.astro,*.md,*.mdx}\""
+    },
+    "dependencies": {
+        "@astrojs/check": "^0.2.1",
+        "@astrojs/tailwind": "^5.0.2",
+        "@mdn/browser-compat-data": "^5.3.24",
+        "@tmkn/packageanalyzer": "^0.9.14",
+        "astro": "^3.3.2",
+        "dayjs": "^1.11.10",
+        "lodash": "^4.17.21",
+        "tailwindcss": "^3.3.3",
+        "typescript": "^5.2.2"
+    },
+    "devDependencies": {
+        "@tailwindcss/typography": "^0.5.10",
+        "@types/lodash": "^4.14.198",
+        "prettier": "^3.0.3",
+        "prettier-plugin-astro": "^0.12.0"
+    }
 }

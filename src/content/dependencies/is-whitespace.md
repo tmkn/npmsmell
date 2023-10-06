@@ -1,5 +1,6 @@
 ---
 name: is-whitespace
+description: Checks if a string only contains whitespace characters.
 type: obsolete-js
 implementation: javascript.builtins.String.trim
 ---

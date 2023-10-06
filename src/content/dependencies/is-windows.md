@@ -1,5 +1,6 @@
 ---
 name: is-windows
+description: Convoluted way to call process.platform === "win32"
 type: trivial
 ---
 

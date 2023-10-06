@@ -1,0 +1,12 @@
+---
+import type { BreadCrumb } from "./Breadcrumbs.astro";
+
+interface Props extends BreadCrumb {}
+const { title, href } = Astro.props;
+---
+
+<li>
+    <a href={href} class="block transition hover:text-gray-700 py-1 px-4 bg-slate-100 rounded-lg">
+        {title}</a
+    >
+</li>

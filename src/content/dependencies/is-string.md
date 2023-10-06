@@ -1,5 +1,6 @@
 ---
 name: is-string
+description: Checks if a value is a string.
 type: trivial
 ---
 

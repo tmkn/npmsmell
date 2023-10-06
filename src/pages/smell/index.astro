@@ -4,12 +4,12 @@ import Search from "../../components/Search.astro";
 ---
 
 <Layout title="npmsmell.com | outdated & trivial NPM packages | Overview">
-    <div class="bg-white mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+    <div class="bg-white mx-auto max-w-screen-xl px-8 py-8 xl:rounded-t-3xl">
         <article class="prose prose-sm max-w-none">
             <h2>Overview:</h2>
             <p>Results are sorted alphabetically.</p>
             <p></p>
         </article>
-        <Search showAllInitially={true} />
+        <Search pathPrefix="./" showAllInitially={true} />
     </div>
 </Layout>
