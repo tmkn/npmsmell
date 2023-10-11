@@ -1,37 +1,36 @@
 ---
 import { getCollection } from "astro:content";
-import TeaserSection from "./TeaserSection.astro";
+import Teaser from "./Teaser.astro";
+
+interface Props {
+    showAllInitially: boolean;
+}
+
+const { showAllInitially } = Astro.props;
 
 const allDependencies = await getCollection("dependencies");
 ---
 
-<section class="bg-slate-100">
-    <div
-        class="mx-auto max-w-screen-xl px-4 py-12 sm:px-6 md:py-16 lg:px-8 drop-shadow-xl bg-white rounded gradient"
-    >
-        <input type="text" class="search border w-full px-2 py-4" placeholder="Search" />
-        <p class="my-2 text-sm italic">Searching {allDependencies.length} entries</p>
-        <div class="flex flex-col space-y-4">
-            {
-                allDependencies.map(dependency => (
-                    <div class="package cursor-pointer hidden">
-                        <a
-                            class="underline decoration-slate-300 hover:decoration-pink-500 hover:font-semibold"
-                            href={`smell/${dependency.slug}`}
-                        >
-                            {dependency.data.name}
-                        </a>
-                    </div>
-                ))
-            }
-            <div class="no-results italic hidden">No results</div>
-        </div>
-        <TeaserSection />
+<section class="">
+    <input
+        type="text"
+        class="search border-2 w-full px-2 py-4 rounded border-indigo-500 text-indigo-500 focus:outline-none focus:border-indigo-700"
+        placeholder="Search"
+    />
+    <p class="my-2 text-sm italic">Searching {allDependencies.length} entries</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mt-8 search-results">
+        {
+            allDependencies.map(dependency => (
+                <Teaser name={dependency.data.name} hidden={!showAllInitially} />
+            ))
+        }
     </div>
+    <div class="no-results italic hidden">No results</div>
+    <slot />
 </section>
 
 <script>
-    const packages = document.querySelectorAll<HTMLAnchorElement>(".package");
+    const packages = document.querySelectorAll<HTMLAnchorElement>(".search-results [data-name]");
     const noResults = document.querySelector<HTMLDivElement>(".no-results");
 
     document.querySelector<HTMLInputElement>(".search")!.addEventListener("keyup", event => {
@@ -45,7 +44,7 @@ const allDependencies = await getCollection("dependencies");
         }
 
         packages.forEach(pkg => {
-            if (pkg.innerText.toLowerCase().includes(query)) {
+            if (pkg.dataset?.name?.toLowerCase().includes(query)) {
                 pkg.classList.remove("hidden");
                 foundResults = true;
             } else {

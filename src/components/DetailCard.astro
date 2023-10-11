@@ -4,12 +4,13 @@ import relativeTime from "dayjs/plugin/relativeTime";
 
 import BaseCard from "./BaseCard.astro";
 import { getDetails, type FrontMatterData } from "../data";
+import type { DependencyType } from "../content/config";
 
 dayjs.extend(relativeTime);
 
 interface Props {
     title: string;
-    tag: string;
+    tag: DependencyType;
     data: FrontMatterData;
 }
 

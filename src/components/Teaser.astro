@@ -1,18 +1,24 @@
 ---
 import { getTeaserData } from "../data";
+import Badge from "./Badge.astro";
 
 interface Props {
     name: string;
+    hidden?: boolean;
 }
 
-const { name } = Astro.props;
+const { name, hidden = false } = Astro.props;
 
 const data = await getTeaserData(name);
 ---
 
 <a
     href={`smell/${data.name}`}
-    class="relative block overflow-hidden rounded-lg border border-gray-100 p-4 sm:p-6 lg:p-8 hover:outline hover:outline-offset-2 hover:outline-2 outline-indigo-600"
+    class:list={[
+        { hidden },
+        "relative block overflow-hidden rounded border border-gray-100 p-4 sm:p-6 lg:p-8 hover:outline hover:outline-offset-2 hover:outline-2 outline-indigo-600"
+    ]}
+    data-name={name}
 >
     <!-- <span
             class="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-indigo-600 to-purple-600"
@@ -22,10 +28,7 @@ const data = await getTeaserData(name);
         <div>
             <h3 class="text-lg font-bold text-gray-900 sm:text-xl">
                 {data.name}
-                <span
-                    class="inline-block ml-2 whitespace-nowrap rounded-full bg-orange-100 px-2.5 py-0.5 text-sm text-orange-700 border border-orange-700"
-                    >{data.type}</span
-                >
+                <Badge type={data.type} />
             </h3>
         </div>
     </div>
@@ -39,7 +42,7 @@ const data = await getTeaserData(name);
     <dl class="mt-6 flex gap-4 sm:gap-6">
         <div class="flex flex-col-reverse">
             <dt class="text-sm font-medium text-gray-600">{data.downloads.toLocaleString()}</dt>
-            <dd class="text-xs text-gray-500">Downloads</dd>
+            <dd class="text-xs text-gray-500">Weekly Downloads</dd>
         </div>
 
         <div class="flex flex-col-reverse">

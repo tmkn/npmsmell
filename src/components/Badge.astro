@@ -1,0 +1,30 @@
+---
+import type { DependencyType } from "../content/config";
+
+interface Props {
+    type: DependencyType;
+}
+
+const colors: Record<DependencyType, string> = {
+    "obsolete-js": "bg-purple-100 text-purple-900",
+    "obsolete-node": "bg-purple-100 text-purple-900",
+    trivial: "bg-cyan-100 text-cyan-900"
+};
+
+const { type } = Astro.props;
+let text: string = type;
+const color = colors[type];
+
+switch (type) {
+    case "obsolete-js":
+    case "obsolete-node":
+        text = "outdated";
+}
+---
+
+<span
+    class:list={[
+        [color],
+        ["inline-block ml-2 whitespace-nowrap rounded-md px-2.5 py-0.5 text-sm shadow-md"]
+    ]}>{text}</span
+>

@@ -1,10 +1,21 @@
 ---
 import Search from "../components/Search.astro";
+import TeaserSection from "../components/TeaserSection.astro";
 import Layout from "../layouts/Layout.astro";
+
+const teasers: string[] = ["isarray", "is-whitespace", "is-string"];
 ---
 
 <Layout>
-    <Search />
+    <div
+        class="mx-auto max-w-screen-xl px-4 py-12 sm:px-6 md:py-16 lg:px-8 drop-shadow-xl bg-white rounded gradient"
+    >
+        <Search showAllInitially={false}>
+            <br />
+            <h2 class="text-large">Best of:</h2>
+            <TeaserSection names={teasers} />
+        </Search>
+    </div>
     <div class="bg-white mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
         <article class="prose max-w-none">
             <h2>About</h2>

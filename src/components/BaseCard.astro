@@ -1,9 +1,11 @@
 ---
+import type { DependencyType } from "../content/config";
+import Badge from "./Badge.astro";
 import DetailCardSection from "./DetailCardSection.astro";
 
 interface Props {
     title: string;
-    tag: string;
+    tag: DependencyType;
     description: string;
     sections: {
         title: string;
@@ -23,11 +25,7 @@ const { title, tag, description, sections } = Astro.props;
                 class="flex items-center justify-center text-3xl font-bold text-gray-900 sm:text-4xl"
             >
                 {title}
-                <span
-                    class="inline-block ml-2 whitespace-nowrap rounded-full bg-orange-100 px-2.5 py-0.5 text-sm text-orange-700 border border-orange-700"
-                >
-                    {tag}
-                </span>
+                <Badge type={tag} />
             </h2>
 
             <p class="mt-4 text-gray-500 sm:text-xl">
