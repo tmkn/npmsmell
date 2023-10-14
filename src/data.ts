@@ -12,7 +12,8 @@ import {
     baseParams,
     obsoleteJSDependency,
     obsoleteNodeDependency,
-    uselessDependency
+    uselessDependency,
+    type DependencyType
 } from "./content/config";
 
 dayjs.extend(relativeTime);
@@ -215,7 +216,7 @@ function getBrowserReleaseDate(browser: string, version: string): string | undef
 interface ITeaserData {
     name: string;
     description: string;
-    type: string;
+    type: DependencyType;
     downloads: number;
     dependencies: number;
 }
