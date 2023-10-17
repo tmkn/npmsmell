@@ -4,6 +4,7 @@ import type { CollectionEntry } from "astro:content";
 
 import Layout from "../../../layouts/Layout.astro";
 import DetailCard from "../../../components/DetailCard.astro";
+import DependencyTree from "../../../components/DependencyTree.astro";
 import type { DependencyType } from "../../../content/config";
 // import CompatTable from "../../../components/CompatTable.astro";
 
@@ -32,6 +33,7 @@ const { Content /*remarkPluginFrontmatter*/ } = await entry.render();
     <pre>{JSON.stringify(remarkPluginFrontmatter, null, 4)}</pre> -->
     <DetailCard title={entry.data.name} tag={entry.data.type} data={entry.data} />
     <!-- {showCompatibilityTable && <CompatTable implementation={implementation} /> -->
+    <DependencyTree pkg={entry.data.name} />
     <div class="bg-white mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
         <article class="prose max-w-none">
             <Content />

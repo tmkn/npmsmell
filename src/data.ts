@@ -240,3 +240,29 @@ export async function getTeaserData(name: string): Promise<ITeaserData> {
         dependencies
     };
 }
+export async function getDependencyTree(name: string): Promise<string[]> {
+    const visitor = new Visitor([name], npmOnline, new OraLogger());
+    const root = await visitor.visit();
+    let dependencies: string[] = [];
+
+    root.visit(pkg => {
+        const ident = getIdent(pkg);
+        const spaces = " ".repeat(ident);
+
+        dependencies = [...dependencies, spaces + pkg.name];
+    }, true);
+
+    return dependencies;
+}
+
+function getIdent(pkg: Package): number {
+    let ident = 0;
+    let current = pkg;
+
+    while (current.parent) {
+        ident += 2;
+        current = current.parent;
+    }
+
+    return ident;
+}
