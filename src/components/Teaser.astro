@@ -20,14 +20,10 @@ const data = await getTeaserData(name);
     ]}
     data-name={name}
 >
-    <!-- <span
-            class="absolute inset-x-0 bottom-0 h-2 bg-gradient-to-r from-green-300 via-indigo-600 to-purple-600"
-        ></span> -->
-
     <div class="sm:flex sm:justify-between sm:gap-4">
         <div>
             <h3 class="text-lg font-bold text-gray-900 sm:text-xl">
-                {data.name}
+                <span class="mr-2">{data.name}</span>
                 <Badge type={data.type} />
             </h3>
         </div>
