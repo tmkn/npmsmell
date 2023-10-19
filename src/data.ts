@@ -3,7 +3,7 @@ import type { CollectionEntry } from "astro:content";
 import bcd from "@mdn/browser-compat-data" assert { type: "json" };
 import _ from "lodash";
 const { get } = _;
-import { Visitor, npmOnline, OraLogger } from "@tmkn/packageanalyzer";
+import { Visitor, npmOnline, OraLogger, Package } from "@tmkn/packageanalyzer";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -265,4 +265,15 @@ function getIdent(pkg: Package): number {
     }
 
     return ident;
+}
+
+export function getDescription({ name, type }: FrontMatterData): string {
+    switch (type) {
+        case "trivial":
+            return `Using ${name} is not recommended. The provided functionality does not warrant its own package.`;
+        case "obsolete-js":
+            return `Using ${name} is not recommended. This dependency re-creates a native JavaScript API. It is recommended to use the native API instead.`;
+        case "obsolete-node":
+            return `Using ${name} is not recommended. This dependency re-creates a native Node.js API. It is recommended to use the native API instead.`;
+    }
 }
