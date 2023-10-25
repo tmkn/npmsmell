@@ -1,4 +1,4 @@
-import { getCollection } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import bcd from "@mdn/browser-compat-data" assert { type: "json" };
 import _ from "lodash";
@@ -224,7 +224,7 @@ interface ITeaserData {
 }
 
 export async function getTeaserData(name: string): Promise<ITeaserData> {
-    const { description } = await getNpmData(name);
+    const entry = await getEntry("dependencies", name);
     const downloads = await getWeeklyDownloads(name);
     const dependencies = await getDependencies(name);
     const allDependencies = await getCollection("dependencies");
@@ -236,7 +236,7 @@ export async function getTeaserData(name: string): Promise<ITeaserData> {
 
     return {
         name,
-        description,
+        description: entry?.data.description ?? "No description found",
         type: dependency.data.type,
         downloads,
         dependencies
@@ -244,9 +244,11 @@ export async function getTeaserData(name: string): Promise<ITeaserData> {
 }
 
 export async function getMockTeaserData(name: string): Promise<ITeaserData> {
+    const entry = await getEntry("dependencies", name);
+
     return {
         name,
-        description: "Lorem ipsum dolor sit amet",
+        description: entry?.data.description ?? "No description found",
         type: "trivial",
         downloads: 1000,
         dependencies: 10
