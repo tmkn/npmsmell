@@ -1,5 +1,6 @@
 ---
 name: is-absolute
+description: Convoluted way to call path.isAbsolute
 type: obsolete-node
 date: 2013-05-13
 version: 0.11.2

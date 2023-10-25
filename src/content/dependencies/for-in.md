@@ -1,12 +1,13 @@
 ---
 name: for-in
 type: obsolete-js
+description: Recreates the behavior of the native for...in statement.
 implementation: javascript.statements.for_in
 ---
 
 ## About
 
-This dependency re-implements the `for...in` statement which is used to iterate over objects.
+This dependency reimplements the `for...in` statement which is used to iterate over objects.
 
 In fact, it even uses the `for...in` statement for its re-implemention, this is the whole [source code](https://github.com/jonschlinkert/for-in/blob/master/index.js):
 

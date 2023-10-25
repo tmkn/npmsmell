@@ -1,5 +1,6 @@
 ---
 name: get-func-name
+description: Convoluted way of accessing the .name property of a function.
 type: obsolete-js
 implementation: javascript.builtins.Function.name
 ---

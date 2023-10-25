@@ -1,7 +1,8 @@
 import { z, defineCollection } from "astro:content";
 
 export const baseParams = z.object({
-    name: z.string()
+    name: z.string(),
+    description: z.string(),
 });
 
 export const uselessDependency = baseParams.extend({

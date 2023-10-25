@@ -21,6 +21,7 @@ dayjs.extend(relativeTime);
 export interface ISection {
     title: string;
     subtitle: string;
+    wobble?: boolean;
 }
 
 export interface IData {
@@ -36,15 +37,15 @@ export function getDetails(data: FrontMatterData): Promise<IData> {
         case "trivial":
             return getDetailsForTrivial(data);
         case "obsolete-js":
-            return getDetailsForObsoleteJS(data);
+            return getDetailsForOutdatedJS(data);
         case "obsolete-node":
-            return getDetailsForObsoleteNode(data);
+            return getDetailsForOutdatedNode(data);
     }
 }
 
 async function createSharedDetails(data: FrontMatterData): Promise<IData> {
     const baseData = baseParams.parse(data);
-    const [{ latestReleaseDate, description }, downloadCount, dependencies] = await Promise.all([
+    const [{ latestReleaseDate }, downloadCount, dependencies] = await Promise.all([
         getNpmData(baseData.name),
         getWeeklyDownloads(baseData.name),
         getDependencies(baseData.name)
@@ -53,7 +54,7 @@ async function createSharedDetails(data: FrontMatterData): Promise<IData> {
 
     return {
         name: "foo",
-        description: description,
+        description: baseData.description,
         sections: [
             {
                 title: downloadCount.toLocaleString(),
@@ -61,7 +62,8 @@ async function createSharedDetails(data: FrontMatterData): Promise<IData> {
             },
             {
                 title: dependencies.toLocaleString(),
-                subtitle: "Dependencies"
+                subtitle: "Dependencies",
+                wobble: data.type === "trivial" && dependencies > 0
             },
             {
                 title: releaseOffset,
@@ -87,7 +89,7 @@ async function getDetailsForTrivial(data: FrontMatterData): Promise<IData> {
     };
 }
 
-async function getDetailsForObsoleteJS(data: FrontMatterData): Promise<IData> {
+async function getDetailsForOutdatedJS(data: FrontMatterData): Promise<IData> {
     const obsoleteJSData = obsoleteJSDependency.parse(data);
     const sharedData = await createSharedDetails(obsoleteJSData);
     const browserSupport = getBrowserSupport(obsoleteJSData.implementation);
@@ -97,7 +99,7 @@ async function getDetailsForObsoleteJS(data: FrontMatterData): Promise<IData> {
         sections: [
             ...sharedData.sections,
             {
-                title: "Obsolete",
+                title: "Outdated",
                 subtitle: `This dependency re-creates a native JavaScript API. It is recommended to use the native API instead`
             },
             {
@@ -108,7 +110,7 @@ async function getDetailsForObsoleteJS(data: FrontMatterData): Promise<IData> {
     };
 }
 
-async function getDetailsForObsoleteNode(data: FrontMatterData): Promise<IData> {
+async function getDetailsForOutdatedNode(data: FrontMatterData): Promise<IData> {
     const obsoleteNodeData = obsoleteNodeDependency.parse(data);
     const sharedData = await createSharedDetails(obsoleteNodeData);
 
@@ -117,7 +119,7 @@ async function getDetailsForObsoleteNode(data: FrontMatterData): Promise<IData> 
         sections: [
             ...sharedData.sections,
             {
-                title: "Obsolete",
+                title: "Outedated",
                 subtitle: `This dependency re-creates a native Node.js API. It is recommended to use the native API instead`
             },
             {
@@ -240,6 +242,16 @@ export async function getTeaserData(name: string): Promise<ITeaserData> {
         dependencies
     };
 }
+
+export async function getMockTeaserData(name: string): Promise<ITeaserData> {
+    return {
+        name,
+        description: "Lorem ipsum dolor sit amet",
+        type: "trivial",
+        downloads: 1000,
+        dependencies: 10
+    };
+}
 export async function getDependencyTree(name: string): Promise<string[]> {
     const visitor = new Visitor([name], npmOnline, new OraLogger());
     const root = await visitor.visit();
@@ -265,15 +277,4 @@ function getIdent(pkg: Package): number {
     }
 
     return ident;
-}
-
-export function getDescription({ name, type }: FrontMatterData): string {
-    switch (type) {
-        case "trivial":
-            return `Using ${name} is not recommended. The provided functionality does not warrant its own package.`;
-        case "obsolete-js":
-            return `Using ${name} is not recommended. This dependency re-creates a native JavaScript API. It is recommended to use the native API instead.`;
-        case "obsolete-node":
-            return `Using ${name} is not recommended. This dependency re-creates a native Node.js API. It is recommended to use the native API instead.`;
-    }
 }
