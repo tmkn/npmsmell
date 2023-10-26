@@ -8,7 +8,7 @@ interface Props {
 
 const { title, description: _description } = Astro.props;
 
-const fallbackDescription = "npmsmell highlights outdated and trivial NPM packages.";
+const fallbackDescription = "npmsmell highlights trivial and outdated NPM packages.";
 const description = _description ?? fallbackDescription;
 ---
 
@@ -16,6 +16,7 @@ const description = _description ?? fallbackDescription;
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.png" />
         <title>{title}</title>
         <meta name="description" content={description} />
         <meta property="og:title" content={title} />

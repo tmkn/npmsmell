@@ -4,13 +4,13 @@ import Search from "../components/Search.astro";
 import TeaserSection from "../components/TeaserSection.astro";
 import Layout from "../layouts/Layout.astro";
 
-const teasers: string[] = ["isarray", "is-whitespace", "is-string"];
+const teasers: string[] = ["is-windows", "isarray", "lower-case"];
 ---
 
-<Layout title="npmsmell.com | outdated & trivial NPM packages">
-    <div class="mx-auto max-w-screen-xl px-8 py-8 bg-white xl:rounded-t-3xl">
+<Layout title="npmsmell.com | trivial & outdated NPM packages">
+    <div class="mx-auto max-w-screen-xl px-8 pt-8 bg-white xl:rounded-t-3xl">
         <Search pathPrefix="./smell/" showAllInitially={false}>
-            <div class="p-4 md:p-8 rounded-xl border-2 border-slate-200">
+            <div class="bg-indigo-50 p-4 md:p-8 rounded-xl">
                 <div class="prose">
                     <h4>Best of:</h4>
                 </div>

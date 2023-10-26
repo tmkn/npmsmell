@@ -12,13 +12,13 @@ const allDependencies = await getCollection("dependencies");
 const { names } = Astro.props;
 ---
 
-<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mt-8">
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mt-4">
     {names.map(name => <Teaser name={name} pathPrefix="./smell/" />)}
     {
         allDependencies.length > names.length && (
             <a
                 href="./smell/"
-                class="relative flex shadow-md justify-center overflow-hidden rounded border border-indigo-300 p-4 sm:p-6 lg:p-8 text-center items-center hover:outline hover:outline-offset-2 hover:outline-2 outline-indigo-600 underline decoration-rose-500 decoration-2 underline-offset-2"
+                class="relative bg-white flex shadow-md justify-center overflow-hidden rounded border border-indigo-300 p-4 sm:p-6 lg:p-8 text-center items-center hover:outline hover:outline-offset-2 hover:outline-2 outline-indigo-600 underline decoration-rose-500 decoration-2 underline-offset-2"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
