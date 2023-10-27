@@ -1,47 +1,80 @@
-# Astro Starter Kit: Minimal
+# [npmsmell.com](https://npmsmell.com)
+
+![public/og.png](public/og.png)
 
 ```
-npm create astro@latest -- --template minimal
+npm run start
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+## About
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+[npmsmell.com](https://npmsmell.com) keeps track of trivial and outdated NPM packages to lessen the impact of supply chain attacks. Ideally, the packages listed on the page should be sunsetted over time.
 
-## 🚀 Project Structure
+## Contributing
 
-Inside of your Astro project, you'll see the following folders and files:
+PR's welcome.
 
+### Info
+
+This is a `Node.js` project.
+
+It is using [Astro](https://astro.build) and [TailwindCSS](https://tailwindcss.com/).
+
+### Package data
+
+The data for the packages are stored in markdow files, which are located in [`src/content/dependencies`](src/content/dependencies/).
+
+Dependending on the type of the package, different frontmatter is required. There are 3 types of packages:
+
+> Note: It currently doesn't support scoped packages.
+
+#### `trivial`
+
+Use this type for packages that implement trivial functionality like checking if numbers are even or odd.
+
+```typescript title="Frontmatter"
+// frontmatter format
+interface {
+    name: string;           // The name of the package
+    description: string;    // A short description of the package
+    type: 'trivial';
+}
 ```
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+
+#### `obsolete-js`
+
+Use this type for packages that implement native JS functionality.
+
+```typescript title="Frontmatter"
+// frontmatter format
+interface {
+    name: string;           // The name of the package
+    description: string;    // A short description of the package
+    type: 'obsolete-js';
+    implementation: string; // The name of the JavaScript function that implements the functionality
+}
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+The `implementation` string comes from the MDN compatibiliy data. Go to the MDN page of the function, look at its Github source and in its frontmatter you will find the corresponding `implementation` string ot use.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+The `implementation` string value is used to to calculate the browser support.
 
-Any static assets, like images, can be placed in the `public/` directory.
+#### `obsolete-node`
 
-## 🧞 Commands
+Use this type for packages that implement functionality that is already available in Node.js.
 
-All commands are run from the root of the project, from a terminal:
+```typescript title="Frontmatter"
+// frontmatter format
+interface {
+    name: string;           // The name of the package
+    description: string;    // A short description of the package
+    type: 'obsolete-node';
+    version: string;        // The version of Node.js that implements the functionality
+}
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## FAQ
 
-## 👀 Want to learn more?
+### Should any trivial or outdated package be added?
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Generally not, the goal is to minimize the impact of supply chain attacks. So packages with high weekly download numbers are prioritized (for now). If the download count is above 100 000 downloads per week, the package should be added.
