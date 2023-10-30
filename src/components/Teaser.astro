@@ -1,5 +1,5 @@
 ---
-import { getMockTeaserData, getTeaserData } from "../data";
+import { getDependencyString, getMockTeaserData, getTeaserData } from "../data";
 import Badge from "./Badge.astro";
 
 interface Props {
@@ -48,7 +48,9 @@ const data = await (import.meta.env.DEV ? getMockTeaserData(name) : getTeaserDat
         </div>
 
         <div class="flex flex-col-reverse">
-            <dt class="text-sm font-medium text-gray-600">{data.dependencies}</dt>
+            <dt class="text-sm font-medium text-gray-600">
+                {getDependencyString(data.dependencies)}
+            </dt>
             <dd class="text-xs text-gray-500">Dependencies</dd>
         </div>
     </dl>
