@@ -1,21 +1,37 @@
 import type { Root } from "mdast";
 import type { VFile } from "vfile";
 import { findAndReplace } from "mdast-util-find-and-replace";
-import { Visitor, npmOnline, OraLogger, Package } from "@tmkn/packageanalyzer";
+import { toString } from "mdast-util-to-string";
+import { Visitor, npmOnline, OraLogger } from "@tmkn/packageanalyzer";
 
 export function remarkDependencyData() {
-    return async function (tree: Root, foo: VFile) {
+    return async function (tree: Root, file: VFile) {
         //@ts-expect-error
-        const name = foo?.data?.astro?.frontmatter?.name;
+        const name = file?.data?.astro?.frontmatter?.name;
+        const textOnPage = toString(tree);
+        const tokens: IMagicToken[] = [
+            new DownloadToken(),
+            new DependenciesToken(),
+            new DistinctDependenciesToken()
+        ];
 
-        const downloads = await getWeeklyDownloads(name);
-        const [dependencies, distinct] = await getDependencies(name);
+        if (!name) {
+            tokens.forEach(({ token }) => {
+                if (textOnPage.includes(token)) {
+                    throw new Error(
+                        `Token ${token} was found on the page, but no name was provided in the frontmatter.`
+                    );
+                }
+            });
 
-        findAndReplace(tree, [
-            [/{{downloads}}/g, downloads.toLocaleString()],
-            [/{{dependencies}}/g, dependencies.toLocaleString()],
-            [/{{distinct_dependencies}}/g, distinct.toLocaleString()]
-        ]);
+            return;
+        }
+
+        for (const { token, data } of tokens) {
+            if (textOnPage.includes(token)) {
+                findAndReplace(tree, [[token, await data(name)]]);
+            }
+        }
     };
 }
 
@@ -38,4 +54,35 @@ async function getDependencies(name: string): Promise<[number, number]> {
     }, true);
 
     return [count, distinceDependencies.size - 1];
+}
+
+// Replaces the token with dynamic data
+interface IMagicToken {
+    token: string;
+    data: (name: string) => Promise<string>;
+}
+
+class DownloadToken implements IMagicToken {
+    public token: string = "{{downloads}}";
+    public async data(name: string): Promise<string> {
+        return (await getWeeklyDownloads(name)).toLocaleString();
+    }
+}
+
+class DependenciesToken implements IMagicToken {
+    public token: string = "{{dependencies}}";
+    public async data(name: string): Promise<string> {
+        const [dependencies] = await getDependencies(name);
+
+        return dependencies.toLocaleString();
+    }
+}
+
+class DistinctDependenciesToken implements IMagicToken {
+    public token: string = "{{distinct_dependencies}}";
+    public async data(name: string): Promise<string> {
+        const [, distinct] = await getDependencies(name);
+
+        return distinct.toLocaleString();
+    }
 }
