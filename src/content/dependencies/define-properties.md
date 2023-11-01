@@ -25,4 +25,4 @@ Object.keys(obj); // []
 
 While this dependency takes a 3rd argument to determine whether to overwrite existing properties, this functionality is very trivial to add yourself.
 
-Not to mention this dependency comes with dependencies of its own, which makes it a very heavy dependency for such a trivial task.
+Not to mention this dependency comes with {{dependencies}} dependencies of its own, which makes it a very heavy dependency for such a trivial task.
