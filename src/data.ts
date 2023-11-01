@@ -61,9 +61,9 @@ async function createSharedDetails(data: FrontMatterData): Promise<IData> {
                 subtitle: "Weekly Downloads"
             },
             {
-                title: dependencies.toLocaleString(),
+                title: getDependencyString(dependencies),
                 subtitle: "Dependencies",
-                wobble: data.type === "trivial" && dependencies > 0
+                wobble: data.type === "trivial" && dependencies[0] > 0
             },
             {
                 title: releaseOffset,
@@ -156,16 +156,18 @@ async function getWeeklyDownloads(name: string): Promise<number> {
     return data.downloads;
 }
 
-async function getDependencies(name: string): Promise<number> {
+async function getDependencies(name: string): Promise<[number, number]> {
     const visitor = new Visitor([name], npmOnline, new OraLogger());
     const root = await visitor.visit();
+    const distinceDependencies: Set<string> = new Set();
     let count = 0;
 
     root.visit(pkg => {
         count += pkg.directDependencies.length;
+        distinceDependencies.add(pkg.fullName);
     }, true);
 
-    return count;
+    return [count, distinceDependencies.size - 1];
 }
 
 function getBrowserSupport(id: string): string {
@@ -220,7 +222,7 @@ interface ITeaserData {
     description: string;
     type: DependencyType;
     downloads: number;
-    dependencies: number;
+    dependencies: [number, number];
 }
 
 export async function getTeaserData(name: string): Promise<ITeaserData> {
@@ -251,9 +253,18 @@ export async function getMockTeaserData(name: string): Promise<ITeaserData> {
         description: entry?.data.description ?? "No description found",
         type: "trivial",
         downloads: 1000,
-        dependencies: 10
+        dependencies: [10, 7]
     };
 }
+
+export function getDependencyString([dependencies, distinct]: [number, number]): string {
+    if (dependencies === distinct) {
+        return `${dependencies}`;
+    }
+
+    return `${dependencies} (${distinct} distinct)`;
+}
+
 export async function getDependencyTree(name: string): Promise<string[]> {
     const visitor = new Visitor([name], npmOnline, new OraLogger());
     const root = await visitor.visit();
