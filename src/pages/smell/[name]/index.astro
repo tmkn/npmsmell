@@ -23,7 +23,7 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content /*remarkPluginFrontmatter*/ } = await entry.render();
+const { Content /*, remarkPluginFrontmatter*/ } = await entry.render();
 ---
 
 <Layout title={`npmsmell.com | ${entry.data.name}`} description={entry.data.description}>
@@ -35,7 +35,6 @@ const { Content /*remarkPluginFrontmatter*/ } = await entry.render();
         ]}
     />
     <DependencyTree pkg={entry.data.name} />
-
     <div class="bg-white mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
         <article class="prose max-w-none">
             <Content />
