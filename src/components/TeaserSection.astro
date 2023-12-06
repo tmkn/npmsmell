@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
-
-import Teaser from "./Teaser.astro";
+import { Teaser, type TeaserProps } from "./Teaser.tsx";
+import { getMockTeaserData, getTeaserData } from "../npm";
 
 interface Props {
     names: string[];
@@ -10,6 +10,29 @@ interface Props {
 
 const allDependencies = await getCollection("dependencies");
 const { names } = Astro.props;
+
+const teasers: Array<TeaserProps> = allDependencies
+    .filter(dependency => names.includes(dependency.data.name))
+    .map(dependency => ({
+        name: dependency.data.name,
+        description: dependency.data.description,
+        type: dependency.data.type,
+        pathPrefix: "./smell/",
+        downloads: -1337,
+        dependencies: 0,
+        distinctDependencies: 0
+    }));
+
+// fill in npm data
+for (const teaser of teasers) {
+    const data = await (import.meta.env.DEV
+        ? getMockTeaserData(teaser.name)
+        : getTeaserData(teaser.name));
+
+    teaser.downloads = data.downloads;
+    teaser.dependencies = data.dependencies[0];
+    teaser.distinctDependencies = data.dependencies[1];
+}
 ---
 
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mt-4">
@@ -37,7 +60,7 @@ const { names } = Astro.props;
             </a>
         )
     }
-    {names.map(name => <Teaser name={name} pathPrefix="./smell/" />)}
+    {teasers.map((teaser) => <Teaser {...teaser} />)}
     {
         allDependencies.length > names.length && (
             <a
