@@ -1,4 +1,3 @@
-import { getCollection, getEntry } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import bcd from "@mdn/browser-compat-data" assert { type: "json" };
 import _ from "lodash";
@@ -8,13 +7,8 @@ import { Visitor, npmOnline, OraLogger, Package } from "@tmkn/packageanalyzer";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-import {
-    baseParams,
-    obsoleteJSDependency,
-    obsoleteNodeDependency,
-    uselessDependency,
-    type DependencyType
-} from "./content/config";
+import { baseParams, obsoleteJSDependency, obsoleteNodeDependency, uselessDependency } from "./npm";
+import { getDependencies, getWeeklyDownloads } from "./npm";
 
 dayjs.extend(relativeTime);
 
@@ -149,27 +143,6 @@ async function getNpmData(name: string): Promise<INpmData> {
     };
 }
 
-async function getWeeklyDownloads(name: string): Promise<number> {
-    const response = await fetch(`https://api.npmjs.org/downloads/point/last-week/${name}`);
-    const data = await response.json();
-
-    return data.downloads;
-}
-
-async function getDependencies(name: string): Promise<[number, number]> {
-    const visitor = new Visitor([name], npmOnline, new OraLogger());
-    const root = await visitor.visit();
-    const distinceDependencies: Set<string> = new Set();
-    let count = 0;
-
-    root.visit(pkg => {
-        count += pkg.directDependencies.length;
-        distinceDependencies.add(pkg.fullName);
-    }, true);
-
-    return [count, distinceDependencies.size - 1];
-}
-
 function getBrowserSupport(id: string): string {
     const browsers: string[] = ["chrome", "firefox", "safari", "nodejs"];
 
@@ -217,47 +190,7 @@ function getBrowserReleaseDate(browser: string, version: string): string | undef
     return releases[version].release_date;
 }
 
-interface ITeaserData {
-    name: string;
-    description: string;
-    type: DependencyType;
-    downloads: number;
-    dependencies: [number, number];
-}
-
-export async function getTeaserData(name: string): Promise<ITeaserData> {
-    const entry = await getEntry("dependencies", name);
-    const downloads = await getWeeklyDownloads(name);
-    const dependencies = await getDependencies(name);
-    const allDependencies = await getCollection("dependencies");
-    const dependency = allDependencies.find(dep => dep.data.name === name);
-
-    if (!dependency) {
-        throw new Error(`Dependency ${name} not found`);
-    }
-
-    return {
-        name,
-        description: entry?.data.description ?? "No description found",
-        type: dependency.data.type,
-        downloads,
-        dependencies
-    };
-}
-
-export async function getMockTeaserData(name: string): Promise<ITeaserData> {
-    const entry = await getEntry("dependencies", name);
-
-    return {
-        name,
-        description: entry?.data.description ?? "No description found",
-        type: "trivial",
-        downloads: 1000,
-        dependencies: [10, 7]
-    };
-}
-
-export function getDependencyString([dependencies, distinct]: [number, number]): string {
+function getDependencyString([dependencies, distinct]: [number, number]): string {
     if (dependencies === distinct) {
         return `${dependencies}`;
     }

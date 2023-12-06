@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
-import Teaser from "./Teaser.astro";
+
+import { Search as SearchWidget, type FrontmatterData } from "../components/Search";
 
 interface Props {
     showAllInitially: boolean;
@@ -10,77 +11,11 @@ interface Props {
 const { showAllInitially, pathPrefix } = Astro.props;
 
 const allDependencies = await getCollection("dependencies");
+const searchTiles: FrontmatterData[] = allDependencies.map(dependency => ({
+    name: dependency.data.name,
+    description: dependency.data.description,
+    type: dependency.data.type
+}));
 ---
 
-<section>
-    <div
-        class="search flex border-2 rounded xl:rounded-2xl bg-neutral-50 border-indigo-500 text-indigo-500 focus:outline-none focus:border-indigo-700"
-    >
-        <div class="bg-indigo-50 rounded-l xl:rounded-l-2xl px-4 py-2 xl:py-4">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="w-6 h-6"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                ></path>
-            </svg>
-        </div>
-        <input
-            type="text"
-            class="outline-none w-full px-2 py-2 xl:py-4 rounded-r xl:rounded-r-2xl"
-            placeholder="Search"
-        />
-    </div>
-    <p class="my-2 text-sm italic">Searching {allDependencies.length} entries</p>
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-8 search-results">
-        {
-            allDependencies.map(dependency => (
-                <Teaser
-                    name={dependency.data.name}
-                    pathPrefix={pathPrefix}
-                    hidden={!showAllInitially}
-                />
-            ))
-        }
-    </div>
-    <div class="no-results italic hidden">No results</div>
-    <slot />
-</section>
-
-<script>
-    const packages = document.querySelectorAll<HTMLAnchorElement>(".search-results [data-name]");
-    const noResults = document.querySelector<HTMLDivElement>(".no-results");
-
-    document.querySelector<HTMLInputElement>(".search")!.addEventListener("keyup", event => {
-        const query = (event.target as HTMLInputElement).value.toLowerCase();
-        let foundResults = false;
-
-        if (query.trim().length === 0) {
-            packages.forEach(pkg => pkg.classList.add("hidden"));
-            noResults!.classList.add("hidden");
-            return;
-        }
-
-        packages.forEach(pkg => {
-            if (pkg.dataset?.name?.toLowerCase().includes(query)) {
-                pkg.classList.remove("hidden");
-                foundResults = true;
-            } else {
-                pkg.classList.add("hidden");
-            }
-        });
-
-        if (foundResults) {
-            noResults!.classList.add("hidden");
-        } else {
-            noResults!.classList.remove("hidden");
-        }
-    });
-</script>
+<SearchWidget tiles={searchTiles} pathPrefix={pathPrefix} showAllInitially={showAllInitially} />
