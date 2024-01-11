@@ -37,15 +37,15 @@ export const Search: FC<Props> = ({ tiles, showAllOnEmpty }) => {
 
     return (
         <section>
-            <div className="search flex border-2 rounded xl:rounded-2xl bg-neutral-50 border-indigo-500 text-indigo-500 focus:outline-none focus:border-indigo-700">
-                <div className="bg-indigo-50 rounded-l xl:rounded-l-2xl px-4 py-2 xl:py-4">
+            <div className="search flex rounded border-2 border-indigo-500 bg-neutral-50 text-indigo-500 focus:border-indigo-700 focus:outline-none xl:rounded-2xl">
+                <div className="rounded-l bg-indigo-50 px-4 py-2 xl:rounded-l-2xl xl:py-4">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
                         strokeWidth="1.5"
                         stroke="currentColor"
-                        className="w-6 h-6"
+                        className="h-6 w-6"
                     >
                         <path
                             strokeLinecap="round"
@@ -56,7 +56,7 @@ export const Search: FC<Props> = ({ tiles, showAllOnEmpty }) => {
                 </div>
                 <input
                     type="text"
-                    className="outline-none w-full px-2 py-2 xl:py-4 rounded-r xl:rounded-r-2xl"
+                    className="w-full rounded-r px-2 py-2 outline-none xl:rounded-r-2xl xl:py-4"
                     placeholder="Search"
                     value={searchString}
                     onChange={e => {
@@ -65,7 +65,7 @@ export const Search: FC<Props> = ({ tiles, showAllOnEmpty }) => {
                 />
             </div>
             <p className="my-2 text-sm italic">{infoText}</p>
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-8 search-results">
+            <div className="search-results mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
                 {filteredTiles.map(tile => (
                     <Teaser key={tile.name} {...tile} />
                 ))}

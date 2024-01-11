@@ -35,7 +35,7 @@ export const Teaser: FC<TeaserProps> = ({
             href={`${pathPrefix}${name}`}
             style={{ backgroundImage: dots, backgroundRepeat: "repeat" }}
             className={
-                "dots bg-white relative block overflow-hidden rounded border border-indigo-200 p-4 sm:p-6 lg:p-8 hover:border-indigo-600"
+                "dots relative block overflow-hidden rounded border border-indigo-200 bg-white p-4 hover:border-indigo-600 sm:p-6 lg:p-8"
             }
             data-name={name}
         >

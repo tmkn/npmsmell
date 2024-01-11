@@ -35,12 +35,12 @@ for (const teaser of teasers) {
 }
 ---
 
-<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mt-4">
+<div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
     {
         allDependencies.length > names.length && (
             <a
                 href="./smell/"
-                class="md:hidden relative bg-white flex shadow-md justify-center overflow-hidden rounded border border-indigo-300 p-4 sm:p-6 lg:p-8 text-center items-center hover:outline hover:outline-offset-2 hover:outline-2 outline-indigo-600 underline decoration-rose-500 decoration-2 underline-offset-2"
+                class="relative flex items-center justify-center overflow-hidden rounded border border-indigo-300 bg-white p-4 text-center underline decoration-rose-500 decoration-2 underline-offset-2 shadow-md outline-indigo-600 hover:outline hover:outline-2 hover:outline-offset-2 sm:p-6 md:hidden lg:p-8"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -48,7 +48,7 @@ for (const teaser of teasers) {
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
                     stroke="currentColor"
-                    class="w-6 h-6"
+                    class="h-6 w-6"
                 >
                     <path
                         stroke-linecap="round"
@@ -60,12 +60,12 @@ for (const teaser of teasers) {
             </a>
         )
     }
-    {teasers.map((teaser) => <Teaser {...teaser} />)}
+    {teasers.map(teaser => <Teaser {...teaser} />)}
     {
         allDependencies.length > names.length && (
             <a
                 href="./smell/"
-                class="hidden md:flex relative bg-white flex shadow-md justify-center overflow-hidden rounded border border-indigo-300 p-4 sm:p-6 lg:p-8 text-center items-center hover:outline hover:outline-offset-2 hover:outline-2 outline-indigo-600 underline decoration-rose-500 decoration-2 underline-offset-2"
+                class="relative flex hidden items-center justify-center overflow-hidden rounded border border-indigo-300 bg-white p-4 text-center underline decoration-rose-500 decoration-2 underline-offset-2 shadow-md outline-indigo-600 hover:outline hover:outline-2 hover:outline-offset-2 sm:p-6 md:flex lg:p-8"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +73,7 @@ for (const teaser of teasers) {
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
                     stroke="currentColor"
-                    class="w-6 h-6"
+                    class="h-6 w-6"
                 >
                     <path
                         stroke-linecap="round"

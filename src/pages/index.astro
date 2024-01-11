@@ -8,16 +8,16 @@ const teasers: string[] = ["is-windows", "isarray", "lower-case"];
 ---
 
 <Layout title="npmsmell.com | trivial & outdated NPM packages">
-    <div class="mx-auto max-w-screen-xl px-8 pt-8 bg-white xl:rounded-t-3xl">
+    <div class="pt-8">
         <Search pathPrefix="./smell/" showAllOnEmpty={false} />
-        <div class="bg-indigo-50 p-4 md:p-8 rounded-xl">
+        <div class="rounded-xl bg-indigo-50 p-4 md:p-8">
             <div class="prose">
                 <h4>Best of:</h4>
             </div>
             <TeaserSection names={teasers} />
         </div>
     </div>
-    <div class="bg-white mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+    <div class="py-8 sm:py-12">
         <article class="prose prose-base max-w-none">
             <hr />
             <h2>About</h2>
@@ -43,8 +43,8 @@ const teasers: string[] = ["is-windows", "isarray", "lower-case"];
                 if they also have high download numbers.
             </p> -->
             <h3>
-                What are <Badge type={"trivial"} /> or <Badge type={"obsolete-js"}/>
-                 packages?
+                What are <Badge type={"trivial"} /> or <Badge type={"obsolete-js"} />
+                packages?
             </h3>
             <h4>Trivial</h4>
             <p>

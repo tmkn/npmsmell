@@ -27,7 +27,7 @@ export const Badge: FC<Props> = ({ type }) => {
 
     return (
         <span
-            className={`${color} inline-block self-center font-normal whitespace-nowrap rounded-md px-2.5 py-0.5 text-sm shadow-md`}
+            className={`${color} inline-block self-center whitespace-nowrap rounded-md px-2.5 py-0.5 text-sm font-normal shadow-md`}
         >
             {text}
         </span>

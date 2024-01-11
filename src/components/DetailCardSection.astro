@@ -7,8 +7,8 @@ interface Props {
 const { title, subtitle, wobble = false } = Astro.props;
 ---
 
-<div class="flex flex-col rounded-lg border border-slate-200 px-4 py-2 sm:py-8 text-center">
-    <dt class:list={[{ "vibrate-1": wobble }, "order-last text-md font-medium text-gray-500"]}>
+<div class="flex flex-col rounded-lg border border-slate-200 px-4 py-2 text-center sm:py-8">
+    <dt class:list={[{ "vibrate-1": wobble }, "text-md order-last font-medium text-gray-500"]}>
         {subtitle}
     </dt>
 
