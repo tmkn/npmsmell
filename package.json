@@ -31,6 +31,7 @@
         "@tailwindcss/typography": "^0.5.10",
         "@types/lodash": "^4.14.198",
         "prettier": "^3.1.1",
-        "prettier-plugin-astro": "^0.12.3"
+        "prettier-plugin-astro": "^0.12.3",
+        "prettier-plugin-tailwindcss": "^0.5.11"
     }
 }

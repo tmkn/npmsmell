@@ -6,7 +6,7 @@
     "typescript.implementationsCodeLens.enabled": true,
     "task.allowAutomaticTasks": "on",
     "editor.formatOnSave": true,
-    // "prettier.documentSelectors": ["**/*.astro"],
+    "prettier.documentSelectors": ["**/*.astro"],
     "[astro]": {
       "editor.defaultFormatter": "esbenp.prettier-vscode"
     },

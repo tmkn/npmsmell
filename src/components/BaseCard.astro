@@ -20,18 +20,18 @@ interface Props {
 const { title, tag, description, sections } = Astro.props;
 ---
 
-<section class="bg-white mx-auto max-w-screen-xl pt-8 xl:rounded-t-3xl">
+<section class="pt-8">
     <div
-        class="text-focus-in dots mx-4 lg:mx-8 px-4 py-4 md:py-12 sm:px-6 md:py-16 lg:px-8 drop-shadow-xl bg-white rounded-2xl border-2 border-indigo-500"
+        class="text-focus-in dots rounded-2xl border-2 border-indigo-500 bg-white px-4 py-4 drop-shadow-xl sm:px-6 md:py-12 md:py-16 lg:px-8"
     >
         <div class="mx-auto max-w-3xl text-center">
             <h2
-                class="flex gap-x-2 items-center justify-center text-xl font-bold text-gray-900 md:text-3xl"
+                class="flex items-center justify-center gap-x-2 text-xl font-bold text-gray-900 md:text-3xl"
             >
                 {title}
                 <Badge type={tag} />
                 <a
-                    class="underline underline-offset-2 decoration-rose-500 decoration-2 hover:text-rose-500 hover:scale-125"
+                    class="underline decoration-rose-500 decoration-2 underline-offset-2 hover:scale-125 hover:text-rose-500"
                     href={`https://www.npmjs.com/package/${title}`}
                     target="_blank"
                     rel="noreferrer noopener"

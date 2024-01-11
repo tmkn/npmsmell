@@ -40,37 +40,39 @@ const description = _description ?? fallbackDescription;
             })(window, document, "clarity", "script", "jgc2c1pwyu");
         </script>
     </head>
-    <body class="bg-slate-100">
+    <body class="mx-auto max-w-screen-xl bg-slate-100">
         <header>
-            <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-8 lg:px-8">
+            <div class="px-4 py-8 sm:px-6 sm:py-8 lg:px-8">
                 <div class="sm:flex sm:items-center sm:justify-between">
                     <div class="text-center sm:text-left">
                         <a class="cursor-pointer" href="/"
                             ><h1
-                                class="text-2xl font-bold text-gray-900 sm:text-3xl focus-in-expand"
+                                class="focus-in-expand text-2xl font-bold text-gray-900 sm:text-3xl"
                             >
                                 <span
-                                    class="bg-gradient-to-r from-purple-500 to-cyan-400 inline-block text-transparent bg-clip-text text-2xl md:text-5xl"
+                                    class="inline-block bg-gradient-to-r from-purple-500 to-cyan-400 bg-clip-text text-2xl text-transparent md:text-5xl"
                                     >NPM Smell<span class="text-white"> 🍑💨</span></span
                                 >
                             </h1></a
                         >
                         <p class="mt-1.5 text-gray-500">
-                            <Badge type={"trivial"} /> and <Badge type={"obsolete-js"}/> NPM packages
+                            <Badge type={"trivial"} /> and <Badge type={"obsolete-js"} /> NPM packages
                         </p>
                     </div>
                 </div>
             </div>
         </header>
-        <slot />
-        <footer class="bg-white mx-auto max-w-screen-xl px-4 py-4 mb-8 xl:rounded-b-3xl">
-            <p class="text-sm text-center drop-shadow-lg">
-                <a
-                    class="underline decoration-rose-500 decoration-2 underline-offset-2"
-                    href="https://twitter.com/tmkndev">@tmkndev</a
-                >
-            </p>
-        </footer>
+        <div class="bg-white px-4 sm:px-6 lg:px-8 xl:rounded-b-3xl xl:rounded-t-3xl">
+            <slot />
+            <footer class="mb-8 py-4">
+                <p class="text-center text-sm drop-shadow-lg">
+                    <a
+                        class="underline decoration-rose-500 decoration-2 underline-offset-2"
+                        href="https://twitter.com/tmkndev">@tmkndev</a
+                    >
+                </p>
+            </footer>
+        </div>
     </body>
 </html>
 
