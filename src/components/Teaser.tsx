@@ -1,4 +1,4 @@
-import { useMemo, type FC } from "react";
+import { useMemo, type FC } from "preact/compat";
 
 import { Badge } from "./Badge.tsx";
 import type { FrontmatterData } from "./Search";

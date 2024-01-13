@@ -1,4 +1,4 @@
-import { type FC, useState, useMemo } from "react";
+import { type FC, useState, useMemo } from "preact/compat";
 
 import { type DependencyType } from "../types";
 import { Teaser, type TeaserProps } from "./Teaser.tsx";
@@ -60,7 +60,7 @@ export const Search: FC<Props> = ({ tiles, showAllOnEmpty }) => {
                     placeholder="Search"
                     value={searchString}
                     onChange={e => {
-                        setSearchString(e.target.value);
+                        setSearchString((e.target as HTMLInputElement)?.value);
                     }}
                 />
             </div>

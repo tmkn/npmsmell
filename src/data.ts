@@ -1,5 +1,5 @@
 import type { CollectionEntry } from "astro:content";
-import bcd from "@mdn/browser-compat-data" assert { type: "json" };
+import bcd from "@mdn/browser-compat-data";
 import _ from "lodash";
 const { get } = _;
 import { Visitor, npmOnline, OraLogger, Package } from "@tmkn/packageanalyzer";
