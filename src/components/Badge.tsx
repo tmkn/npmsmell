@@ -1,6 +1,6 @@
 import { useMemo, type FC } from "react";
 
-import type { DependencyType } from "../npm";
+import type { DependencyType } from "../types";
 
 interface Props {
     type: DependencyType;
