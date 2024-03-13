@@ -4,7 +4,7 @@ import { Badge } from "./Badge.tsx";
 import type { FrontmatterData } from "./Search";
 
 import dotsSvg from "./dots.svg?raw";
-const dots = `url('data:image/svg+xml;base64, ${btoa(dotsSvg)}');`;
+const dots = `url('data:image/svg+xml;base64, ${btoa(dotsSvg)}')`;
 
 export interface TeaserProps extends FrontmatterData {
     downloads: number;
