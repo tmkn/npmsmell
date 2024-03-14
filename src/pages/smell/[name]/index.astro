@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
+import { db, Comment, Author, eq } from "astro:db";
 
 import Layout from "../../../layouts/Layout.astro";
 import DetailCard from "../../../components/DetailCard.astro";
@@ -24,9 +25,19 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content /*, remarkPluginFrontmatter*/ } = await entry.render();
+
+const comments = await db.select().from(Comment).innerJoin(Author, eq(Comment.authorId, Author.id));
 ---
 
 <Layout title={`npmsmell.com | ${entry.data.name}`} description={entry.data.description}>
+    {
+        comments.map(({ Author, Comment }) => (
+            <article>
+                <p>Author: {Author.name}</p>
+                <p>{Comment.body}</p>
+            </article>
+        ))
+    }
     <DetailCard title={entry.data.name} tag={entry.data.type} data={entry.data} />
     <Breadcrumbs
         breadcrumbs={[
