@@ -6,7 +6,6 @@ import { Visitor, npmOnline, OraLogger } from "@tmkn/packageanalyzer";
 
 export function remarkDependencyData() {
     return async function (tree: Root, file: VFile) {
-        //@ts-expect-error
         const name = file?.data?.astro?.frontmatter?.name;
         const textOnPage = toString(tree);
         const tokens: IMagicToken[] = [
