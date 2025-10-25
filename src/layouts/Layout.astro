@@ -1,6 +1,8 @@
 ---
 import Badge from "../components/Badge.tsx";
 
+import "../styles/global.css";
+
 interface Props {
     title: string;
     description?: string;
@@ -40,7 +42,7 @@ const description = _description ?? fallbackDescription;
             })(window, document, "clarity", "script", "jgc2c1pwyu");
         </script>
     </head>
-    <body class="mx-auto max-w-screen-xl bg-slate-100">
+    <body class="mx-auto max-w-(--breakpoint-xl) bg-slate-100">
         <header>
             <div class="px-4 py-8 sm:px-6 sm:py-8 lg:px-8">
                 <div class="sm:flex sm:items-center sm:justify-between">
@@ -50,7 +52,7 @@ const description = _description ?? fallbackDescription;
                                 class="focus-in-expand text-2xl font-bold text-gray-900 sm:text-3xl"
                             >
                                 <span
-                                    class="inline-block bg-gradient-to-r from-purple-500 to-cyan-400 bg-clip-text text-2xl text-transparent md:text-5xl"
+                                    class="inline-block bg-linear-to-r from-purple-500 to-cyan-400 bg-clip-text text-2xl text-transparent md:text-5xl"
                                     >NPM Smell<span class="text-white"> 🍑💨</span></span
                                 >
                             </h1></a
@@ -62,7 +64,7 @@ const description = _description ?? fallbackDescription;
                 </div>
             </div>
         </header>
-        <div class="bg-white px-4 sm:px-6 lg:px-8 xl:rounded-b-3xl xl:rounded-t-3xl">
+        <div class="bg-white px-4 sm:px-6 lg:px-8 xl:rounded-t-3xl xl:rounded-b-3xl">
             <slot />
             <footer class="mb-8 py-4">
                 <p class="text-center text-sm drop-shadow-lg">
