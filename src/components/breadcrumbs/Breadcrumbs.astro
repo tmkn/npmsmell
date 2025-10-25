@@ -14,9 +14,9 @@ const { breadcrumbs } = Astro.props;
 ---
 
 <nav aria-label="Breadcrumb" class="pt-8">
-    <ol class="flex items-center gap-1 text-sm text-gray-600">
+    <ol class="text-muted flex items-center gap-1 text-sm">
         <li>
-            <a href="/" class="block transition hover:text-gray-700">
+            <a href="/" class="hover:text-content block transition">
                 <span class="sr-only"> Home</span>
 
                 <svg
@@ -50,7 +50,7 @@ const { breadcrumbs } = Astro.props;
                         <>
                             <Spacer />
                             <li>
-                                <a href={href} class="block transition hover:text-gray-700">
+                                <a href={href} class="hover:text-content block transition">
                                     {" "}
                                     {title}
                                 </a>

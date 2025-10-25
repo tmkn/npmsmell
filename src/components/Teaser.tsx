@@ -35,13 +35,13 @@ export const Teaser: FC<TeaserProps> = ({
             href={`${pathPrefix}${name}`}
             style={{ backgroundImage: dots, backgroundRepeat: "repeat" }}
             className={
-                "dots relative block overflow-hidden rounded border border-indigo-200 bg-white p-4 hover:border-indigo-600 sm:p-6 lg:p-8"
+                "dots bg-surface hover:border-card-border border-card-border-subtle relative block overflow-hidden rounded border p-4 sm:p-6 lg:p-8 dark:bg-blend-overlay"
             }
             data-name={name}
         >
             <div className="sm:flex sm:justify-between sm:gap-4">
                 <div>
-                    <h3 className="flex gap-x-2 text-lg font-bold text-gray-900 sm:text-xl">
+                    <h3 className="text-content flex gap-x-2 text-lg font-bold sm:text-xl">
                         <span>{name}</span>
                         <Badge type={type} />
                     </h3>
@@ -49,20 +49,20 @@ export const Teaser: FC<TeaserProps> = ({
             </div>
 
             <div className="mt-4">
-                <p className="text-sm text-gray-500">{description}</p>
+                <p className="text-muted-subtle text-sm">{description}</p>
             </div>
 
             <dl className="mt-6 flex gap-4 sm:gap-6">
                 <div className="flex flex-col-reverse">
-                    <dt className="text-sm font-medium text-gray-600">
+                    <dt className="text-muted text-sm font-medium">
                         {downloads.toLocaleString("en-US")}
                     </dt>
-                    <dd className="text-xs text-gray-500">Weekly Downloads</dd>
+                    <dd className="text-muted-subtle text-xs">Weekly Downloads</dd>
                 </div>
 
                 <div className="flex flex-col-reverse">
-                    <dt className="text-sm font-medium text-gray-600">{dependenciesString}</dt>
-                    <dd className="text-xs text-gray-500">Dependencies</dd>
+                    <dt className="text-muted text-sm font-medium">{dependenciesString}</dt>
+                    <dd className="text-muted-subtle text-xs">Dependencies</dd>
                 </div>
             </dl>
         </a>

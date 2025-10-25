@@ -7,9 +7,9 @@ interface Props {
 }
 
 const colors: Record<DependencyType, string> = {
-    "obsolete-js": "bg-purple-100 text-purple-900",
-    "obsolete-node": "bg-purple-100 text-purple-900",
-    trivial: "bg-cyan-100 text-cyan-900"
+    "obsolete-js": "bg-outdated-bg text-outdated-text",
+    "obsolete-node": "bg-outdated-bg text-outdated-text",
+    trivial: "bg-trivial-bg text-trivial-text"
 };
 
 export const Badge: FC<Props> = ({ type }) => {
@@ -27,7 +27,7 @@ export const Badge: FC<Props> = ({ type }) => {
 
     return (
         <span
-            className={`${color} inline-block self-center whitespace-nowrap rounded-md px-2.5 py-0.5 text-sm font-normal shadow-md`}
+            className={`${color} inline-block self-center rounded-md px-2.5 py-0.5 text-sm font-normal whitespace-nowrap shadow-md`}
         >
             {text}
         </span>

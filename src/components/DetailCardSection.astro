@@ -8,11 +8,11 @@ const { title, subtitle, wobble = false } = Astro.props;
 ---
 
 <div class="flex flex-col rounded-lg border border-slate-200 px-4 py-2 text-center sm:py-8">
-    <dt class:list={[{ "vibrate-1": wobble }, "text-md order-last font-medium text-gray-500"]}>
+    <dt class:list={[{ "vibrate-1": wobble }, "text-md text-muted-subtle order-last font-medium"]}>
         {subtitle}
     </dt>
 
-    <dd class:list={[{ "vibrate-1": wobble }, "text-xl font-extrabold text-indigo-600"]}>
+    <dd class:list={[{ "vibrate-1": wobble }, "text-wobble text-xl font-extrabold"]}>
         {title}
     </dd>
 </div>
