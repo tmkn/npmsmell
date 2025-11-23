@@ -1,9 +1,19 @@
+import { QueryClient } from "@tanstack/query-core";
 import { Visitor, npmOnline, OraLogger } from "@tmkn/packageanalyzer";
 
 interface ITeaserData {
     downloads: number;
     dependencies: [number, number];
 }
+
+const cache = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: 3,
+            staleTime: Infinity
+        }
+    }
+});
 
 export async function getTeaserData(name: string): Promise<ITeaserData> {
     const downloads = await getWeeklyDownloads(name);
@@ -23,22 +33,43 @@ export async function getMockTeaserData(_name: string): Promise<ITeaserData> {
 }
 
 export async function getWeeklyDownloads(name: string): Promise<number> {
-    const response = await fetch(`https://api.npmjs.org/downloads/point/last-week/${name}`);
-    const data = await response.json();
+    const downloads = await cache.fetchQuery({
+        queryKey: ["downloads", name],
+        queryFn: async ({ signal }) => {
+            const response = await fetch(
+                `https://api.npmjs.org/downloads/point/last-week/${name}`,
+                { signal }
+            );
+            try {
+                const data = await response.json();
 
-    return data.downloads;
+                return data.downloads;
+            } catch (e) {
+                console.trace(`Couldn't get downloads for ${name}`);
+            }
+        }
+    });
+
+    return downloads;
 }
 
 export async function getDependencies(name: string): Promise<[number, number]> {
-    const visitor = new Visitor([name], npmOnline, new OraLogger());
-    const root = await visitor.visit();
-    const distinceDependencies: Set<string> = new Set();
-    let count = 0;
+    const dependencies = await cache.fetchQuery<[number, number]>({
+        queryKey: ["dependencies", name],
+        queryFn: async () => {
+            const visitor = new Visitor([name], npmOnline, new OraLogger());
+            const root = await visitor.visit();
+            const distinceDependencies: Set<string> = new Set();
+            let count = 0;
 
-    root.visit(pkg => {
-        count += pkg.directDependencies.length;
-        distinceDependencies.add(pkg.fullName);
-    }, true);
+            root.visit(pkg => {
+                count += pkg.directDependencies.length;
+                distinceDependencies.add(pkg.fullName);
+            }, true);
 
-    return [count, distinceDependencies.size - 1];
+            return [count, distinceDependencies.size - 1];
+        }
+    });
+
+    return dependencies;
 }

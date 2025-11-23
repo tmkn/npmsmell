@@ -2,7 +2,7 @@ import type { Root } from "mdast";
 import type { VFile } from "vfile";
 import { findAndReplace } from "mdast-util-find-and-replace";
 import { toString } from "mdast-util-to-string";
-import { Visitor, npmOnline, OraLogger } from "@tmkn/packageanalyzer";
+import { getDependencies, getWeeklyDownloads } from "./npm";
 
 export function remarkDependencyData() {
     return async function (tree: Root, file: VFile) {
@@ -32,27 +32,6 @@ export function remarkDependencyData() {
             }
         }
     };
-}
-
-async function getWeeklyDownloads(name: string): Promise<number> {
-    const response = await fetch(`https://api.npmjs.org/downloads/point/last-week/${name}`);
-    const data = await response.json();
-
-    return data.downloads;
-}
-
-async function getDependencies(name: string): Promise<[number, number]> {
-    const visitor = new Visitor([name], npmOnline, new OraLogger());
-    const root = await visitor.visit();
-    const distinceDependencies: Set<string> = new Set();
-    let count = 0;
-
-    root.visit(pkg => {
-        count += pkg.directDependencies.length;
-        distinceDependencies.add(pkg.fullName);
-    }, true);
-
-    return [count, distinceDependencies.size - 1];
 }
 
 // Replaces the token with dynamic data
