@@ -11,28 +11,28 @@ interface Props {
 const allDependencies = await getCollection("dependencies");
 const { names } = Astro.props;
 
-const teasers: Array<TeaserProps> = allDependencies
-    .filter(dependency => names.includes(dependency.data.name))
-    .map(dependency => ({
-        name: dependency.data.name,
-        description: dependency.data.description,
-        type: dependency.data.type,
-        pathPrefix: "./smell/",
-        downloads: -1337,
-        dependencies: 0,
-        distinctDependencies: 0
-    }));
+const teasers: TeaserProps[] = await Promise.all(
+    names.map(async name => {
+        const metadata = allDependencies.find(dep => dep.data.name === name);
 
-// fill in npm data
-for (const teaser of teasers) {
-    const data = await (import.meta.env.DEV
-        ? getMockTeaserData(teaser.name)
-        : getTeaserData(teaser.name));
+        if (!metadata) throw new Error(`Couldn't find metadata for ${name}`);
 
-    teaser.downloads = data.downloads;
-    teaser.dependencies = data.dependencies[0];
-    teaser.distinctDependencies = data.dependencies[1];
-}
+        const {
+            downloads,
+            dependencies: [dependencies, distinctDependencies]
+        } = await (import.meta.env.DEV ? getMockTeaserData(name) : getTeaserData(name));
+
+        return {
+            name: metadata.data.name,
+            description: metadata.data.description,
+            type: metadata.data.type,
+            pathPrefix: "./smell/",
+            downloads,
+            dependencies,
+            distinctDependencies
+        };
+    })
+);
 ---
 
 <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
