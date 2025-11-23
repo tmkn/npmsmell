@@ -1,5 +1,8 @@
 ---
 import Badge from "../components/Badge.tsx";
+import ThemeToggler from "../components/ThemeToggler.astro";
+
+import "../styles/global.css";
 
 interface Props {
     title: string;
@@ -40,34 +43,50 @@ const description = _description ?? fallbackDescription;
             })(window, document, "clarity", "script", "jgc2c1pwyu");
         </script>
     </head>
-    <body class="mx-auto max-w-screen-xl bg-slate-100">
+    <body class="bg-background mx-auto max-w-(--breakpoint-xl)">
+        <script is:inline>
+            if (
+                localStorage.getItem("theme") === "dark" ||
+                (!("theme" in localStorage) &&
+                    window.matchMedia("(prefers-color-scheme: dark)").matches)
+            ) {
+                document.body.classList.add("dark");
+            } else {
+                document.body.classList.remove("dark");
+            }
+        </script>
         <header>
             <div class="px-4 py-8 sm:px-6 sm:py-8 lg:px-8">
-                <div class="sm:flex sm:items-center sm:justify-between">
-                    <div class="text-center sm:text-left">
-                        <a class="cursor-pointer" href="/"
-                            ><h1
-                                class="focus-in-expand text-2xl font-bold text-gray-900 sm:text-3xl"
-                            >
-                                <span
-                                    class="inline-block bg-gradient-to-r from-purple-500 to-cyan-400 bg-clip-text text-2xl text-transparent md:text-5xl"
-                                    >NPM Smell<span class="text-white"> 🍑💨</span></span
+                <div class="flex">
+                    <div class="flex-grow">
+                        <div class="flex justify-between">
+                            <a class="cursor-pointer" href="/"
+                                ><h1
+                                    class="focus-in-expand text-content text-2xl font-bold sm:text-3xl"
                                 >
-                            </h1></a
-                        >
-                        <p class="mt-1.5 text-gray-500">
+                                    <span
+                                        class="from-title-from to-title-to inline-block bg-linear-to-r bg-clip-text text-2xl text-transparent md:text-5xl"
+                                        >NPM Smell<span class="text-white"> 🍑💨</span></span
+                                    >
+                                </h1>
+                            </a>
+                            <div class="">
+                                <ThemeToggler />
+                            </div>
+                        </div>
+                        <p class="text-muted-subtle mt-1.5">
                             <Badge type={"trivial"} /> and <Badge type={"obsolete-js"} /> NPM packages
                         </p>
                     </div>
                 </div>
             </div>
         </header>
-        <div class="bg-white px-4 sm:px-6 lg:px-8 xl:rounded-b-3xl xl:rounded-t-3xl">
+        <div class="bg-surface px-4 sm:px-6 lg:px-8 xl:rounded-t-3xl xl:rounded-b-3xl">
             <slot />
             <footer class="mb-8 py-4">
                 <p class="text-center text-sm drop-shadow-lg">
                     <a
-                        class="underline decoration-rose-500 decoration-2 underline-offset-2"
+                        class="text-content decoration-accent underline decoration-2 underline-offset-2"
                         href="https://twitter.com/tmkndev">@tmkndev</a
                     >
                 </p>

@@ -37,8 +37,8 @@ export const Search: FC<Props> = ({ tiles, showAllOnEmpty }) => {
 
     return (
         <section>
-            <div className="search flex rounded border-2 border-indigo-500 bg-neutral-50 text-indigo-500 focus:border-indigo-700 focus:outline-none xl:rounded-2xl">
-                <div className="rounded-l bg-indigo-50 px-4 py-2 xl:rounded-l-2xl xl:py-4">
+            <div className="text-search bg-search-bg flex rounded border-2 xl:rounded-2xl">
+                <div className="bg-search-icon-bg rounded-l px-4 py-2 xl:rounded-l-2xl xl:py-4">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -64,7 +64,7 @@ export const Search: FC<Props> = ({ tiles, showAllOnEmpty }) => {
                     }}
                 />
             </div>
-            <p className="my-2 text-sm italic">{infoText}</p>
+            <p className="text-muted my-2 text-sm italic">{infoText}</p>
             <div className="search-results mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
                 {filteredTiles.map(tile => (
                     <Teaser key={tile.name} {...tile} />

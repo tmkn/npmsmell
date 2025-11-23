@@ -10,15 +10,15 @@ const teasers: string[] = ["is-string", "isarray", "is-windows"];
 <Layout title="npmsmell.com | trivial & outdated NPM packages">
     <div class="pt-8">
         <Search pathPrefix="./smell/" showAllOnEmpty={false} />
-        <div class="rounded-xl bg-indigo-50 p-4 md:p-8">
-            <div class="prose">
+        <div class="bg-search-icon-bg rounded-xl p-4 md:p-8">
+            <div class="prose dark:prose-invert">
                 <h4>Best of:</h4>
             </div>
             <TeaserSection names={teasers} />
         </div>
     </div>
     <div class="py-8 sm:py-12">
-        <article class="prose prose-base max-w-none">
+        <article class="prose prose-base dark:prose-invert max-w-none">
             <hr />
             <h2>About</h2>
             <p>
