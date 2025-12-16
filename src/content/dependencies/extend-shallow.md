@@ -10,7 +10,7 @@ implementation: javascript.builtins.Object.assign
 
 This dependency reimplements the [`Object.assign`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign) method which is used to shallowly copy properties from one or more source objects to a target object.
 
-It also needs 4 dependencies to do what `Object.assign` can do natively.
+It also needs additional dependencies to do what `Object.assign` can do natively.
 
 ```js
 // merge 2 objects
@@ -47,4 +47,4 @@ const merged = {
 console.log(merged); // { foo: "bar", baz: "qux" }
 ```
 
-The `spread` operator is supported by all modern browsers and Node.js versions since about 9 years.
+The `spread` operator for objects is supported by all modern browsers and Node.js versions since ES2018. `Object.assign` is supported since ES6 (2015).

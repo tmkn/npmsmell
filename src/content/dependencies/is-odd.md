@@ -21,10 +21,10 @@ This can be done natively with the [`%` remainder](https://developer.mozilla.org
 Odd numbers return `1`, so a corresponding function would look like:
 
 ```js
-function isEven(number) {
+function isOdd(number) {
     return number % 2 !== 0;
 }
 
-isEven(3); // true
-isEven(6); // false
+isOdd(3); // true
+isOdd(6); // false
 ```

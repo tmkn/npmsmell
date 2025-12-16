@@ -7,14 +7,14 @@ implementation: javascript.builtins.Object.defineProperties
 
 ## About
 
-This dependency lets you set multiple non enumerated properties on an object at once. This can be done natively with the [`Object.defineProperties`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties) method.
+This dependency lets you set multiple non-enumerable properties on an object at once. This can be done natively with the [`Object.defineProperties`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties) method.
 
-It's supported by all modern browsers and Node.js versions since about 6 years.
+It's supported by all modern browsers and Node.js versions since ES5 (2009).
 
 ### Example
 
 ```js
-// unless specified, added properties are non enumerable by default
+// unless specified, added properties are non-enumerable by default
 Object.defineProperties(obj, {
     foo: { value: "bar" },
     baz: { value: "qux" }
@@ -23,6 +23,6 @@ Object.defineProperties(obj, {
 Object.keys(obj); // []
 ```
 
-While this dependency takes a 3rd argument to determine whether to overwrite existing properties, this functionality is very trivial to add yourself.
+While this dependency takes a 3rd argument to determine whether to overwrite existing properties, this functionality is trivial to implement.
 
-Not to mention this dependency comes with {{dependencies}} dependencies of its own, which makes it a very heavy dependency for such a trivial task.
+Not to mention this dependency comes with multiple dependencies of its own, which makes it a heavy dependency for such a trivial task.

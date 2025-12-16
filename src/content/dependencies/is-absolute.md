@@ -1,6 +1,6 @@
 ---
 name: is-absolute
-description: Convoluted way to call path.isAbsolute
+description: A convoluted way to check if a path is absolute.
 type: obsolete-node
 date: 2013-05-13
 version: 0.11.2
@@ -8,7 +8,7 @@ version: 0.11.2
 
 ## About
 
-Checks if a path is absolute.
+This dependency checks if a path is absolute.
 
 To check if a path is absolute, you can use the builtin Node.js method [`path.isAbsolute`](https://nodejs.org/api/path.html#path_path_isabsolute_path):
 

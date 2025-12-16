@@ -9,7 +9,7 @@ implementation: javascript.statements.for_in
 
 This dependency reimplements the `for...in` statement which is used to iterate over objects.
 
-In fact, it even uses the `for...in` statement for its re-implemention, this is the whole [source code](https://github.com/jonschlinkert/for-in/blob/master/index.js):
+In fact, it even uses the `for...in` statement for its re-implementation. This is the whole [source code](https://github.com/jonschlinkert/for-in/blob/master/index.js):
 
 ```js
 /*!
@@ -77,6 +77,6 @@ console.log(keys); // ["foo"]
 console.log(values); // ["bar"]
 ```
 
-However `for...in` has some caveats, see [this article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in#Caveats) for more information.
+However `for...in` has some caveats. See [this article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in#Caveats) for more information.
 
-You are more likely to want to use `for...of` instead, see [this article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of) for more information.
+You are more likely to want to use `for...of` instead. See [this article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of) for more information.

@@ -7,7 +7,7 @@ implementation: javascript.builtins.Object.defineProperty
 
 ## About
 
-This dependency reimplents the native [`Object.defineProperty()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty) method. It is supported by all modern browsers and Node.js versions since about 6 years.
+This dependency reimplements the native [`Object.defineProperty()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty) method. It is supported by all modern browsers and Node.js versions since ES5 (2009).
 
 ```js
 // Define a non-enumerable property on an object
@@ -21,4 +21,4 @@ console.log(obj.foo); // "bar"
 console.log(Object.keys(obj)); // []
 ```
 
-Additionally it needs 7 additional dependencies to do what `Object.defineProperty` can do natively.
+Additionally, it needs multiple dependencies to do what `Object.defineProperty` can do natively.

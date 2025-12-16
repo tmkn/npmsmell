@@ -7,9 +7,9 @@ implementation: javascript.builtins.Array.isArray
 
 ## About
 
-This dependency checks if you're dealing with an array.
+This dependency checks if a value is an array.
 
-To check if you're dealing with an array, you can use the `Array.isArray` method:
+To check if a value is an array, you can use the `Array.isArray` method:
 
 `Array.isArray` is part of the ECMAScript standard and is widely supported in modern browsers and Node.js.
 
@@ -35,4 +35,4 @@ true instanceof Array; // false
 // etc.
 ```
 
-No need to use a dependency for this.
+No need for a dependency.

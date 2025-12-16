@@ -8,7 +8,7 @@ type: trivial
 
 This dependency checks if a number is even.
 
-This can be done natively with the [`%` remainder](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Remainder) operator. It returns the remainder leftover.
+This can be done natively using the [`%` remainder](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Remainder) operator. It returns the remainder.
 
 ```js
 1 % 2; // 1

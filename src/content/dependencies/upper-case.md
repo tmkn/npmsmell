@@ -7,7 +7,7 @@ implementation: javascript.builtins.String.toUpperCase
 
 ## About
 
-This dependency reimplents the native [`String.prototype.toUpperCase()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toUpperCase) method. It is supported by all modern browsers and Node.js versions since about x years.
+This dependency reimplements the native [`String.prototype.toUpperCase()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toUpperCase) method. It is supported by all modern browsers and Node.js versions since the beginning of JavaScript.
 
 ```js
 // Convert a string to upper case

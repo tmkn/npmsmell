@@ -9,17 +9,17 @@ implementation: javascript.builtins.Set
 
 This dependency filters duplicate values from an array.
 
-This can be done concisely and natively by using the [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) object and the [`spread operator``](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax):
+This can be done concisely and natively by using the [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) object and the [`spread operator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax):
 
 ```js
 const arr1 = [1, 2, 3, 4, 5, 5, 5];
-const unique1 = [...new Set(arr)]; // [1, 2, 3, 4, 5]
+const unique1 = [...new Set(arr1)]; // [1, 2, 3, 4, 5]
 
 const arr2 = ["a", "b", "c", "c", "d", "d", "d"];
-const unique1 = [...new Set(arr)]; // ["a", "b", "c", "d"]
+const unique2 = [...new Set(arr2)]; // ["a", "b", "c", "d"]
 ```
 
-As function:
+As a function:
 
 ```js
 function unique(arr) {
@@ -43,4 +43,4 @@ function unique(arr) {
 }
 ```
 
-The `Set` object and `spread operator` are supported by all modern browsers and Node.js versions since about 7 years.
+The `Set` object and `spread operator` are supported by all modern browsers and Node.js versions since ES6 (2015).
