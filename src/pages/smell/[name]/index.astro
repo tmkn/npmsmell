@@ -7,6 +7,7 @@ import DetailCard from "../../../components/DetailCard.astro";
 import DependencyTree from "../../../components/DependencyTree.astro";
 import type { DependencyType } from "../../../types";
 import Breadcrumbs from "../../../components/breadcrumbs/Breadcrumbs.astro";
+import { SMELL_URL } from "../../../common";
 
 interface Props {
     entry: CollectionEntry<"dependencies">;
@@ -30,8 +31,8 @@ const { Content /*, remarkPluginFrontmatter*/ } = await entry.render();
     <DetailCard title={entry.data.name} tag={entry.data.type} data={entry.data} />
     <Breadcrumbs
         breadcrumbs={[
-            { title: "Overview", href: "." },
-            { title: entry.data.name, href: `` }
+            { title: "Overview", href: SMELL_URL },
+            { title: entry.data.name, href: "" }
         ]}
     />
     <DependencyTree pkg={entry.data.name} />

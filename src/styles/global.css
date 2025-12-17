@@ -29,6 +29,8 @@
     --color-title-to: theme(colors.cyan.400);
 
     --color-accent: theme(colors.rose.500);
+
+    --color-highlight: var(--color-search);
 }
 
 @layer base {

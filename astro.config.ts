@@ -21,5 +21,12 @@ export default defineConfig({
 
     vite: {
         plugins: [tailwindcss()]
+    },
+
+    redirects: {
+        "/smell": {
+            status: 302,
+            destination: "/smells"
+        }
     }
 });

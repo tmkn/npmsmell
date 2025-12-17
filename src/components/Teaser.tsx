@@ -1,7 +1,7 @@
 import { useMemo, type FC } from "react";
 
 import { Badge } from "./Badge.tsx";
-import type { FrontmatterData } from "./Search";
+import type { FrontmatterData } from "./SearchWidget.tsx";
 
 import dotsSvg from "./dots.svg?raw";
 const dots = `url('data:image/svg+xml;base64, ${btoa(dotsSvg)}')`;
@@ -11,6 +11,7 @@ export interface TeaserProps extends FrontmatterData {
     dependencies: number;
     distinctDependencies: number;
     pathPrefix: string;
+    searchString?: string;
 }
 
 export const Teaser: FC<TeaserProps> = ({
@@ -20,7 +21,8 @@ export const Teaser: FC<TeaserProps> = ({
     description,
     downloads,
     dependencies,
-    distinctDependencies
+    distinctDependencies,
+    searchString
 }) => {
     const dependenciesString = useMemo<string>(() => {
         if (dependencies === distinctDependencies) {
@@ -29,6 +31,24 @@ export const Teaser: FC<TeaserProps> = ({
 
         return `${dependencies} (${distinctDependencies} distinct)`;
     }, [dependencies, distinctDependencies]);
+
+    const highlightedName = useMemo(() => {
+        if (!searchString) return name;
+
+        const parts = name.split(searchString);
+        return parts.map((part, i) =>
+            i === parts.length - 1 ? (
+                part
+            ) : (
+                <span key={i}>
+                    {part}
+                    <span className="decoration-highlight underline decoration-[3px] underline-offset-4">
+                        {searchString}
+                    </span>
+                </span>
+            )
+        );
+    }, [name, searchString]);
 
     return (
         <a
@@ -42,7 +62,7 @@ export const Teaser: FC<TeaserProps> = ({
             <div className="sm:flex sm:justify-between sm:gap-4">
                 <div>
                     <h3 className="text-content flex gap-x-2 text-lg font-bold sm:text-xl">
-                        <span>{name}</span>
+                        <span>{highlightedName}</span>
                         <Badge type={type} />
                     </h3>
                 </div>
