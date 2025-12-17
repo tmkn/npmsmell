@@ -1,6 +1,6 @@
 import { type FC, useState, useMemo } from "react";
 
-import { type DependencyType } from "../types";
+import { type DependencyType } from "../types.ts";
 import { Teaser, type TeaserProps } from "./Teaser.tsx";
 
 export interface FrontmatterData {
@@ -15,7 +15,7 @@ interface Props {
     showAllOnEmpty: boolean;
 }
 
-export const Search: FC<Props> = ({ tiles, showAllOnEmpty }) => {
+export const SearchWidget: FC<Props> = ({ tiles, showAllOnEmpty }) => {
     const [searchString, setSearchString] = useState<string>("");
     const filteredTiles = useMemo<TeaserProps[]>(() => {
         if (searchString.trim() === "" && showAllOnEmpty) return tiles;
