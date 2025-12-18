@@ -11,7 +11,32 @@ export interface TeaserProps extends FrontmatterData {
     dependencies: number;
     distinctDependencies: number;
     pathPrefix: string;
+    searchString?: string;
 }
+
+const HighlightedText: FC<{ text: string; highlight?: string }> = ({ text, highlight }) => {
+    const parts = useMemo(() => {
+        if (!highlight) return [text];
+        const escaped = highlight.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        return text.split(new RegExp(`(${escaped})`, "gi"));
+    }, [text, highlight]);
+
+    if (!highlight) return <>{text}</>;
+
+    return (
+        <>
+            {parts.map((part, i) =>
+                i % 2 === 1 ? (
+                    <span key={i} className="bg-highlight">
+                        {part}
+                    </span>
+                ) : (
+                    part
+                )
+            )}
+        </>
+    );
+};
 
 export const Teaser: FC<TeaserProps> = ({
     pathPrefix,
@@ -20,7 +45,8 @@ export const Teaser: FC<TeaserProps> = ({
     description,
     downloads,
     dependencies,
-    distinctDependencies
+    distinctDependencies,
+    searchString
 }) => {
     const dependenciesString = useMemo<string>(() => {
         if (dependencies === distinctDependencies) {
@@ -42,7 +68,9 @@ export const Teaser: FC<TeaserProps> = ({
             <div className="sm:flex sm:justify-between sm:gap-4">
                 <div>
                     <h3 className="text-content flex gap-x-2 text-lg font-bold sm:text-xl">
-                        <span>{name}</span>
+                        <span>
+                            <HighlightedText text={name} highlight={searchString} />
+                        </span>
                         <Badge type={type} />
                     </h3>
                 </div>

@@ -22,7 +22,7 @@ export const SearchWidget: FC<Props> = ({ tiles, showAllOnEmpty }) => {
         else if (searchString.trim() === "") return [];
         else {
             return tiles.filter(tile => {
-                return tile.name.includes(searchString);
+                return tile.name.toLowerCase().includes(searchString.toLowerCase());
             });
         }
     }, [searchString, tiles]);
@@ -67,7 +67,7 @@ export const SearchWidget: FC<Props> = ({ tiles, showAllOnEmpty }) => {
             <p className="text-muted my-2 text-sm italic">{infoText}</p>
             <div className="search-results mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
                 {filteredTiles.map(tile => (
-                    <Teaser key={tile.name} {...tile} />
+                    <Teaser key={tile.name} {...tile} searchString={searchString} />
                 ))}
             </div>
         </section>

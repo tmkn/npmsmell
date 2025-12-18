@@ -29,6 +29,8 @@
     --color-title-to: theme(colors.cyan.400);
 
     --color-accent: theme(colors.rose.500);
+
+    --color-highlight: theme(colors.amber.200);
 }
 
 @layer base {
@@ -63,7 +65,13 @@
         --color-title-to: theme(colors.cyan.300);
 
         --color-accent: theme(colors.rose.400);
+
+        --color-highlight: theme(colors.amber.800);
     }
+}
+
+.bg-highlight {
+    background-color: var(--color-highlight);
 }
 
 body:not(.dark) .astro-code,
