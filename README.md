@@ -8,25 +8,23 @@ npm run start
 
 ## About
 
-[npmsmell.com](https://npmsmell.com) keeps track of trivial and outdated NPM packages to lessen the impact of supply chain attacks. Ideally, the packages listed on the page should be sunsetted over time.
+[npmsmell.com](https://npmsmell.com) tracks trivial and outdated NPM packages to reduce the risk of supply chain attacks. Over time, listed packages should ideally be sunsetted.
 
 ## Contributing
 
-PR's welcome.
+Pull requests are welcome.
 
 ### Info
 
-This is a `Node.js` project.
-
-It is using [Astro](https://astro.build) and [TailwindCSS](https://tailwindcss.com/).
+The project is built with `Node.js` and uses [Astro](https://astro.build) and [TailwindCSS](https://tailwindcss.com/).
 
 ### Package data
 
-The data for the packages are stored in markdow files, which are located in [`src/content/dependencies`](src/content/dependencies/).
+Package data is stored in Markdown files under [`src/content/dependencies`](src/content/dependencies/).
 
-Dependending on the type of the package, different frontmatter is required. There are 3 types of packages:
+Depending on the package type, different frontmatter is required. There are three package types:
 
-> Note: It currently doesn't support scoped packages.
+> Note: Scoped packages are not currently supported.
 
 #### `trivial`
 
@@ -43,7 +41,7 @@ interface {
 
 #### `obsolete-js`
 
-Use this type for packages that implement native JS functionality.
+Use this type for packages that implement functionality now natively available in JavaScript (browser or runtime).
 
 ```typescript title="Frontmatter"
 // frontmatter format
@@ -55,13 +53,13 @@ interface {
 }
 ```
 
-The `implementation` string comes from the MDN compatibiliy data. Go to the MDN page of the function, look at its Github source and in its frontmatter you will find the corresponding `implementation` string ot use.
+The implementation string comes from MDN compatibility data. On the MDN page for the function, check the GitHub source and its frontmatter to find the corresponding implementation string.
 
-The `implementation` string value is used to to calculate the browser support.
+This string is used to calculate browser support.
 
 #### `obsolete-node`
 
-Use this type for packages that implement functionality that is already available in Node.js.
+Use this type for packages that implement functionality already available in `Node.js`.
 
 ```typescript title="Frontmatter"
 // frontmatter format
@@ -73,8 +71,16 @@ interface {
 }
 ```
 
+#### Placeholders
+
+You can also include placeholders in your Markdown content to display dynamic NPM data. The following placeholders are supported:
+
+- `{{downloads}}` — replaced with the package's weekly download count
+- `{{dependencies}}` — replaced with the total number of dependencies
+- `{{distinct_dependencies}}` — replaced with the number of distinct dependencies
+
 ## FAQ
 
 ### Should any trivial or outdated package be added?
 
-Generally not, the goal is to minimize the impact of supply chain attacks. So packages with high weekly download numbers are prioritized (for now). If the download count is above 100 000 downloads per week, the package should be added.
+Generally not, the goal is to reduce the risk of supply chain attacks. Packages with high weekly download numbers are prioritized. If a package has over 100,000 weekly downloads, it is a good candidate for inclusion.

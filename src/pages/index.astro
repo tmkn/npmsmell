@@ -21,42 +21,37 @@ const teasers: string[] = ["is-string", "isarray", "is-windows"];
         <article class="prose prose-base dark:prose-invert max-w-none">
             <hr />
             <h2>About</h2>
+            <p>NPM Smell aims to reduce the impact of supply chain attacks in the NPM ecosystem.</p>
             <p>
-                NPM Smell's ultimate goal is to minimize the impact of supply chain attacks in NPM.
-            </p>
-            <p>
-                It tries to do so by highlighting trivial or outdated dependencies with high
-                download numbers so that package maintainers can act and remove those dependencies.
+                It does this by highlighting trivial or outdated dependencies with high download
+                counts, enabling maintainers to remove them.
             </p>
             <h2>Why?</h2>
             <p>
-                Security. NPM contains a lot of trivial or outdated packages. Yet they are still
-                being downloaded by millions. This makes them a prime candidate for the next supply
-                chain attack.
+                Security. NPM contains many trivial or outdated packages that are downloaded
+                millions of times, making them prime targets for supply chain attacks.
             </p>
             <p>
-                A popular attack vector is taking over those packages and updating them with
-                malicious code.
+                Attackers often exploit the fact that trivial or outdated packages are essentially
+                complete and require minimal maintenance. When maintainers lose interest or no
+                longer have time to maintain them, attackers often act in good faith by proposing to
+                take over the project, before publishing malicious updates.
             </p>
-            <!-- <p>
-                Trivial and outdated packages are a good target for this kind of attack especially
-                if they also have high download numbers.
-            </p> -->
             <h3>
                 What are <Badge type={"trivial"} /> or <Badge type={"obsolete-js"} />
                 packages?
             </h3>
             <h4>Trivial</h4>
             <p>
-                Trivial packages are packages that should be common knowledge for any JavaScript
-                developer. Like checking for an array or checking if a number is odd. While the
-                functionality is often trivial they also sometimes come with additional
-                dependencies. Unnecessarily increasing the attack surface.
+                Trivial packages provide functionality that should be common knowledge for most
+                JavaScript developers. For example, checking if a value is an array or a number is
+                odd. Despite their simplicity, these packages may introduce additional dependencies,
+                unnecessarily increasing the attack surface.
             </p>
             <h4>Outdated</h4>
             <p>
-                Outdated packages are packages whose functionality they provide is now supported by
-                the language itself.
+                Outdated packages provide functionality that is now supported by the language or
+                runtime itself.
             </p>
         </article>
     </div>
