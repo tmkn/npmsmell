@@ -1,9 +1,9 @@
 import { useMemo, type FC } from "react";
 
-import { Badge } from "./Badge.tsx";
+import { Badge } from "../Badge.tsx";
 import type { FrontmatterData } from "./SearchWidget.tsx";
 
-import dotsSvg from "./dots.svg?raw";
+import dotsSvg from "../dots.svg?raw";
 const dots = `url('data:image/svg+xml;base64, ${btoa(dotsSvg)}')`;
 
 export interface TeaserProps extends FrontmatterData {

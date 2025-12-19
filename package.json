@@ -8,8 +8,11 @@
         "build": "astro check && astro build",
         "preview": "astro preview",
         "astro": "astro",
-        "prettier": "prettier --write \"{src,pages}/**/{*.ts,*.tsx,*.css,*.astro,*.md,*.mdx}\"",
-        "check": "astro check"
+        "prettier": "prettier --write \"{src,e2e,tests}/**/{*.ts,*.tsx,*.css,*.astro,*.md,*.mdx}\"",
+        "check": "astro check",
+        "test:e2e": "playwright test",
+        "test:e2e:ui": "playwright test --ui",
+        "test:unit": "vitest run"
     },
     "dependencies": {
         "@astrojs/check": "^0.9.6",
@@ -26,13 +29,19 @@
         "typescript": "^5.9.3"
     },
     "devDependencies": {
+        "@playwright/test": "^1.57.0",
         "@tailwindcss/typography": "^0.5.19",
         "@tanstack/query-core": "^5.90.12",
+        "@testing-library/jest-dom": "^6.9.1",
+        "@testing-library/react": "^16.3.1",
+        "@testing-library/user-event": "^14.6.1",
         "@types/lodash": "^4.17.21",
         "@types/react": "^19.2.7",
         "@types/react-dom": "^19.2.3",
+        "jsdom": "^27.3.0",
         "prettier": "^3.7.4",
         "prettier-plugin-astro": "^0.14.1",
-        "prettier-plugin-tailwindcss": "^0.7.1"
+        "prettier-plugin-tailwindcss": "^0.7.1",
+        "vitest": "^4.0.16"
     }
 }

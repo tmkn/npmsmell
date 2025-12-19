@@ -1,6 +1,6 @@
-import { type FC, useState, useMemo } from "react";
+import { type FC, useState, useMemo, useEffect } from "react";
 
-import { type DependencyType } from "../types.ts";
+import { type DependencyType } from "../../types.ts";
 import { Teaser, type TeaserProps } from "./Teaser.tsx";
 
 export interface FrontmatterData {
@@ -34,6 +34,11 @@ export const SearchWidget: FC<Props> = ({ tiles, showAllOnEmpty }) => {
             return `Found ${filteredTiles.length} entries for "${searchString}"`;
         }
     }, [searchString, tiles, filteredTiles]);
+
+    useEffect(() => {
+        // needs to be added so that E2E tests can wait for search to be hydrated
+        document.documentElement.dataset.searchHydrated = "true";
+    }, []);
 
     return (
         <section>
