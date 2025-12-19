@@ -4,7 +4,7 @@ import type { CollectionEntry } from "astro:content";
 
 import Layout from "../../../layouts/Layout.astro";
 import DetailCard from "../../../components/DetailCard.astro";
-import DependencyTree from "../../../components/DependencyTree.astro";
+import DependencyTree from "../../../components/dependency-tree/DependencyTree.astro";
 import type { DependencyType } from "../../../types";
 import Breadcrumbs from "../../../components/breadcrumbs/Breadcrumbs.astro";
 import { SMELL_URL } from "../../../common";
@@ -42,7 +42,7 @@ const { Content /*, remarkPluginFrontmatter*/ } = await entry.render();
             <div class="flex justify-end">
                 <a
                     href={`https://github.com/tmkn/npmsmell/edit/master/src/content/dependencies/${entry.data.name}.md`}
-                    class="prose-sm hover:text-content text-muted-subtle inline-flex items-center gap-1 text-right"
+                    class="prose-sm hover:text-content text-muted-subtle inline-flex items-center gap-2 text-right"
                     target="_blank"
                     ><svg
                         xmlns="http://www.w3.org/2000/svg"
