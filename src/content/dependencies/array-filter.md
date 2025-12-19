@@ -7,7 +7,7 @@ implementation: javascript.builtins.Array.filter
 
 ## About
 
-This dependency reimplents the native [`Array.prototype.filter()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) method. It is supported by all modern browsers and Node.js versions since about 11 years.
+This dependency reimplements the native [`Array.prototype.filter()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter) method. It is supported by all modern browsers and Node.js versions since ES5 (2009).
 
 The `Array.prototype.filter()` method creates a new array with all elements that pass the test implemented by the provided function.
 

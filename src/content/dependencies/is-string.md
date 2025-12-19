@@ -8,7 +8,7 @@ type: trivial
 
 This dependency checks if a given value is a `string`.
 
-This can be easily done natively with the `typeof` operator in JavaScript:
+This can be done natively using the `typeof` operator in JavaScript:
 
 ### `typeof` operator
 
@@ -16,7 +16,7 @@ This can be easily done natively with the `typeof` operator in JavaScript:
 typeof "foo" === "string"; // true
 ```
 
-That's it, that's all you need to check if a value is a string in JavaScript.
+That's all you need to check if a value is a string in JavaScript.
 
 ```js
 typeof 123 === "string"; // false

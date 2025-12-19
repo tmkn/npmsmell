@@ -8,7 +8,7 @@ type: trivial
 
 This dependency combines a list of arrays, returning a single array with unique values.
 
-This can be done concisely and natively by using the [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) object and the [`spread operator``](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax):
+This can be done natively using the [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) object and the [`spread operator``](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax):
 
 ```js
 const arr1 = [1, 2, 3, 4, 5];

@@ -47,4 +47,5 @@ const merged = {
 console.log(merged); // { foo: "bar", baz: "qux" }
 ```
 
-The `spread` operator is supported by all modern browsers and Node.js versions since about 9 years.
+The `spread` operator is supported by all modern browsers and Node.js versions since ES2018.
+`Object.assign` is supported since ES6 (2015).
