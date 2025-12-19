@@ -7,8 +7,8 @@ implementation: javascript.builtins.String.trim
 
 ## About
 
-This dependency checks if a given string only contains whitespace characters.
-This can be done natively with the [`String.prototype.trim`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/trim) method.
+This dependency checks if a given string contains only whitespace characters.
+This can be done natively using the [`String.prototype.trim`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/trim) method.
 
 ### Usage
 

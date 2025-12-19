@@ -7,7 +7,7 @@ implementation: javascript.builtins.Array.isArray
 
 ## About
 
-This dependency checks if you're dealing with an array.
+This dependency checks if a value is an array.
 
 To check for an array, you can use the native `Array.isArray` method:
 

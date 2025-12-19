@@ -1,6 +1,6 @@
 ---
 name: get-func-name
-description: Convoluted way of accessing the .name property of a function.
+description: A convoluted way to access the .name property of a function.
 type: obsolete-js
 implementation: javascript.builtins.Function.name
 ---
@@ -9,9 +9,9 @@ implementation: javascript.builtins.Function.name
 
 This dependency returns the name of a function.
 
-You can get the name of a function by simply accessing the `name` property of the function.
+You can get the name of a function by simply accessing the `name` property.
 
-It's natively supported in JavaScript since well over 10 years by now.
+It is natively supported in JavaScript since ES6 (2015).
 
 ### Code
 

@@ -7,7 +7,7 @@ implementation: javascript.builtins.Array.forEach
 
 ## About
 
-This dependency reimplents the native [`Array.prototype.forEach()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach) method. It is supported by all modern browsers and Node.js versions since about 11 years.
+This dependency reimplements the native [`Array.prototype.forEach()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach) method. It is supported by all modern browsers and Node.js versions since ES5 (2009).
 
 ```js
 // Loop over all elements in an array

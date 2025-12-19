@@ -7,9 +7,9 @@ implementation: javascript.builtins.Object.defineProperties
 
 ## About
 
-This dependency lets you set multiple non enumerated properties on an object at once. This can be done natively with the [`Object.defineProperties`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties) method.
+This dependency lets you set multiple non-enumerable properties on an object at once. This can be done natively with the [`Object.defineProperties`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperties) method.
 
-It's supported by all modern browsers and Node.js versions since about 6 years.
+It's supported by all modern browsers and Node.js versions since ES5 (2009).
 
 ### Example
 

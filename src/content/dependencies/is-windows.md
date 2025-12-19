@@ -6,7 +6,7 @@ type: trivial
 
 ## About
 
-This dependency checks if the code is being run on Windows.
+This dependency checks if the code is running on Windows.
 
 Node.js provides the [`process.platform`](https://nodejs.org/api/process.html#process_process_platform) property which returns the platform on which the Node.js process is running.
 

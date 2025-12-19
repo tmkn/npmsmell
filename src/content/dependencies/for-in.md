@@ -9,7 +9,7 @@ implementation: javascript.statements.for_in
 
 This dependency reimplements the `for...in` statement which is used to iterate over objects.
 
-In fact, it even uses the `for...in` statement for its re-implemention, this is the whole [source code](https://github.com/jonschlinkert/for-in/blob/master/index.js):
+In fact, it even uses the `for...in` statement for its re-implementation. This is the whole [source code](https://github.com/jonschlinkert/for-in/blob/master/index.js):
 
 ```js
 /*!
