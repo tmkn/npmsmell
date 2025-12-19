@@ -203,29 +203,30 @@ function getDependencyString([dependencies, distinct]: [number, number]): string
     return `${dependencies} (${distinct} distinct)`;
 }
 
-export async function getDependencyTree(name: string): Promise<string[]> {
-    const visitor = new Visitor([name], npmOnline, new OraLogger());
-    const root = await visitor.visit();
-    let dependencies: string[] = [];
-
-    root.visit(pkg => {
-        const ident = getIdent(pkg);
-        const spaces = " ".repeat(ident);
-
-        dependencies = [...dependencies, spaces + pkg.name];
-    }, true);
-
-    return dependencies;
+export interface DependencyNode {
+    name: string;
+    version: string;
+    dependencies: DependencyNode[];
+    isLoop: boolean;
+    subtreeCount: number;
 }
 
-function getIdent(pkg: Package): number {
-    let ident = 0;
-    let current = pkg;
+export async function getDependencyTree(name: string): Promise<DependencyNode> {
+    const visitor = new Visitor([name], npmOnline, new OraLogger());
+    const root = await visitor.visit();
 
-    while (current.parent) {
-        ident += 2;
-        current = current.parent;
-    }
+    return buildDependencyNode(root);
+}
 
-    return ident;
+function buildDependencyNode(pkg: Package): DependencyNode {
+    const dependencies = pkg.directDependencies.map(buildDependencyNode);
+    const subtreeCount = dependencies.reduce((acc, dep) => acc + 1 + dep.subtreeCount, 0);
+
+    return {
+        name: pkg.name,
+        version: pkg.version,
+        isLoop: pkg.isLoop,
+        dependencies,
+        subtreeCount
+    };
 }

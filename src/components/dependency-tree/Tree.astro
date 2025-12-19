@@ -1,0 +1,42 @@
+---
+import TreeNodeHeader from "./TreeNodeHeader.astro";
+import type { DependencyNode } from "../../data";
+
+interface Props {
+    node: DependencyNode;
+    depth?: number;
+}
+
+const { node, depth = 0 } = Astro.props;
+const hasDeps = node.dependencies.length > 0;
+---
+
+<li class="relative list-none">
+    {
+        hasDeps ? (
+            <details open={depth < 1}>
+                <summary class="hover:text-wobble flex cursor-pointer list-none items-center">
+                    <span class="mr-1 inline-block w-4 scale-75 text-center transition-transform group-open:rotate-90">
+                        ▶
+                    </span>
+
+                    <TreeNodeHeader node={node} />
+                </summary>
+                <ul class="mt-1 ml-2 border-l border-gray-300 pl-4 dark:border-gray-700">
+                    {node.dependencies.map(dep => (
+                        <Astro.self node={dep} depth={depth + 1} />
+                    ))}
+                </ul>
+            </details>
+        ) : (
+            <div class="flex items-center pl-6">
+                <TreeNodeHeader node={node} />
+                {node.isLoop && (
+                    <span class="ml-2 rounded border border-red-500 px-1 text-xs text-red-500">
+                        Loop
+                    </span>
+                )}
+            </div>
+        )
+    }
+</li>
