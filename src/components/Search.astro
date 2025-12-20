@@ -1,9 +1,9 @@
 ---
 import { getCollection } from "astro:content";
 
-import { SearchWidget, type FrontmatterData } from "../components/SearchWidget.tsx";
+import { SearchWidget, type FrontmatterData } from "./search/SearchWidget.tsx";
 import { getMockTeaserData, getTeaserData } from "../npm";
-import type { TeaserProps } from "./Teaser.tsx";
+import type { TeaserProps } from "./search/Teaser.tsx";
 
 interface Props {
     showAllOnEmpty: boolean;

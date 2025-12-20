@@ -20,7 +20,12 @@ export default defineConfig({
     },
 
     vite: {
-        plugins: [tailwindcss()]
+        plugins: [tailwindcss()],
+        server: {
+            watch: {
+                ignored: ["**/playwright-report/**", "**/test-results/**"]
+            }
+        }
     },
 
     redirects: {
