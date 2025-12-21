@@ -2,8 +2,8 @@
 import { getCollection } from "astro:content";
 
 import { SearchWidget, type FrontmatterData } from "./search/SearchWidget.tsx";
-import { getMockTeaserData, getTeaserData } from "../npm";
 import type { TeaserProps } from "./search/Teaser.tsx";
+import { getEntry } from "astro:content";
 
 interface Props {
     showAllOnEmpty: boolean;
@@ -22,15 +22,17 @@ const searchTiles: FrontmatterData[] = allDependencies.map(dependency => ({
 const tiles: TeaserProps[] = [];
 
 for (const tile of searchTiles) {
-    const data = await (import.meta.env.DEV
-        ? getMockTeaserData(tile.name)
-        : getTeaserData(tile.name));
+    const npmData = await getEntry("npmData", tile.name);
+
+    if (!npmData) {
+        throw new Error(`No npmData found for ${tile.name}`);
+    }
 
     tiles.push({
         ...tile,
-        downloads: data.downloads,
-        dependencies: data.dependencies[0],
-        distinctDependencies: data.dependencies[1],
+        downloads: npmData.data.downloads,
+        dependencies: npmData.data.dependencies[0],
+        distinctDependencies: npmData.data.dependencies[1],
         pathPrefix
     });
 }

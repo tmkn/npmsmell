@@ -1,10 +1,6 @@
 import { QueryClient } from "@tanstack/query-core";
-import { Visitor, npmOnline, OraLogger } from "@tmkn/packageanalyzer";
-
-interface ITeaserData {
-    downloads: number;
-    dependencies: [number, number];
-}
+import { Visitor, npmOnline, OraLogger, Package } from "@tmkn/packageanalyzer";
+import { z } from "astro/zod";
 
 const cache = new QueryClient({
     defaultOptions: {
@@ -15,22 +11,74 @@ const cache = new QueryClient({
     }
 });
 
-export async function getTeaserData(name: string): Promise<ITeaserData> {
-    const downloads = await getWeeklyDownloads(name);
-    const dependencies = await getDependencies(name);
+export const RegistryDataSchema = z.object({
+    latestReleaseDate: z.string(),
+    description: z.string()
+});
+
+type IRegistryData = z.infer<typeof RegistryDataSchema>;
+
+export async function getRegistryData(name: string): Promise<IRegistryData> {
+    const registryData = await cache.fetchQuery<IRegistryData>({
+        queryKey: ["registry", name],
+        queryFn: async ({ signal }) => {
+            const response = await fetch(`https://registry.npmjs.org/${name}`, { signal });
+            const data = await response.json();
+
+            return {
+                latestReleaseDate: data.time[data["dist-tags"].latest],
+                description: data.description
+            };
+        }
+    });
+
+    return registryData;
+}
+
+export interface DependencyNode {
+    name: string;
+    version: string;
+    dependencies: DependencyNode[];
+    isLoop: boolean;
+    subtreeCount: number;
+}
+
+export const DependencyNodeSchema: z.ZodType<DependencyNode> = z.lazy(() =>
+    z.object({
+        name: z.string(),
+        version: z.string(),
+        dependencies: z.array(DependencyNodeSchema),
+        isLoop: z.boolean(),
+        subtreeCount: z.number()
+    })
+);
+
+function buildDependencyNode(pkg: Package): DependencyNode {
+    const dependencies = pkg.directDependencies.map(buildDependencyNode);
+    const subtreeCount = dependencies.reduce((acc, dep) => acc + 1 + dep.subtreeCount, 0);
 
     return {
-        downloads,
-        dependencies
+        name: pkg.name,
+        version: pkg.version,
+        isLoop: pkg.isLoop,
+        dependencies,
+        subtreeCount
     };
 }
 
-export async function getMockTeaserData(_name: string): Promise<ITeaserData> {
-    return {
-        downloads: 1000,
-        dependencies: [10, 7]
-    };
+export async function getDependencyTree(name: string): Promise<DependencyNode> {
+    const visitor = new Visitor([name], npmOnline, new OraLogger());
+    const root = await visitor.visit();
+
+    return buildDependencyNode(root);
 }
+
+export const TeaserDataSchema = z.object({
+    downloads: z.number(),
+    dependencies: z.tuple([z.number(), z.number()])
+});
+
+type ITeaserData = z.infer<typeof TeaserDataSchema>;
 
 export async function getWeeklyDownloads(name: string): Promise<number> {
     const downloads = await cache.fetchQuery({
@@ -40,13 +88,10 @@ export async function getWeeklyDownloads(name: string): Promise<number> {
                 `https://api.npmjs.org/downloads/point/last-week/${name}`,
                 { signal }
             );
-            try {
-                const data = await response.json();
 
-                return data.downloads;
-            } catch (e) {
-                console.trace(`Couldn't get downloads for ${name}`);
-            }
+            const data = await response.json();
+
+            return data.downloads;
         }
     });
 
@@ -72,4 +117,68 @@ export async function getDependencies(name: string): Promise<[number, number]> {
     });
 
     return dependencies;
+}
+
+export async function getTeaserData(name: string): Promise<ITeaserData> {
+    const downloads = await getWeeklyDownloads(name);
+    const dependencies = await getDependencies(name);
+
+    return {
+        downloads,
+        dependencies
+    };
+}
+
+// TODO: clean up fields
+// group stuff from manifest then tree and then downloads
+export const PackageMetaDataSchema = TeaserDataSchema.merge(
+    z.object({
+        tree: DependencyNodeSchema,
+        registry: RegistryDataSchema
+    })
+);
+
+export type PackageMetaData = z.infer<typeof PackageMetaDataSchema>;
+
+// To have some real data during development
+const bypassMock: string[] = ["is-string"];
+
+export async function getPackageMetaData(name: string): Promise<PackageMetaData> {
+    if (import.meta.env.DEV && !bypassMock.includes(name)) {
+        return getMockPackageMetaData(name);
+    }
+
+    const teaserData = await getTeaserData(name);
+    const tree = await getDependencyTree(name);
+    const registry = await getRegistryData(name);
+
+    return {
+        ...teaserData,
+        tree,
+        registry
+    };
+}
+
+function getMockPackageMetaData(name: string): PackageMetaData {
+    const teaserData: ITeaserData = {
+        downloads: 1000,
+        dependencies: [10, 7]
+    };
+    const tree: DependencyNode = {
+        name,
+        version: "1.0.0",
+        dependencies: [],
+        isLoop: false,
+        subtreeCount: 0
+    };
+    const registry: IRegistryData = {
+        latestReleaseDate: "2025-01-01T00:00:00.000Z",
+        description: "This is a mock package description."
+    };
+
+    return {
+        ...teaserData,
+        tree,
+        registry
+    };
 }
