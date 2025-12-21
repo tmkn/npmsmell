@@ -1,7 +1,7 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
+
 import { Teaser, type TeaserProps } from "./search/Teaser.tsx";
-import { getMockTeaserData, getTeaserData } from "../npm";
 import { SMELL_URL } from "../common";
 
 interface Props {
@@ -18,10 +18,16 @@ const teasers: TeaserProps[] = await Promise.all(
 
         if (!metadata) throw new Error(`Couldn't find metadata for ${name}`);
 
+        const npmData = await getEntry("npmData", name);
+
+        if (!npmData) {
+            throw new Error(`No npmData found for ${name}`);
+        }
+
         const {
             downloads,
             dependencies: [dependencies, distinctDependencies]
-        } = await (import.meta.env.DEV ? getMockTeaserData(name) : getTeaserData(name));
+        } = npmData.data;
 
         return {
             name: metadata.data.name,

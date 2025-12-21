@@ -1,8 +1,6 @@
-import type { CollectionEntry } from "astro:content";
+import { getEntry, type CollectionEntry } from "astro:content";
 import bcd from "@mdn/browser-compat-data" assert { type: "json" };
-import _ from "lodash";
-const { get } = _;
-import { Visitor, npmOnline, OraLogger, Package } from "@tmkn/packageanalyzer";
+import get from "lodash/get";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -13,7 +11,6 @@ import {
     obsoleteNodeDependency,
     uselessDependency
 } from "./types";
-import { getDependencies, getWeeklyDownloads } from "./npm";
 
 dayjs.extend(relativeTime);
 
@@ -44,11 +41,18 @@ export function getDetails(data: FrontMatterData): Promise<IData> {
 
 async function createSharedDetails(data: FrontMatterData): Promise<IData> {
     const baseData = baseParams.parse(data);
-    const [{ latestReleaseDate }, downloadCount, dependencies] = await Promise.all([
-        getNpmData(baseData.name),
-        getWeeklyDownloads(baseData.name),
-        getDependencies(baseData.name)
-    ]);
+    const npmData = await getEntry("npmData", baseData.name);
+
+    if (!npmData) {
+        throw new Error(`No npmData found for ${baseData.name}`);
+    }
+
+    const {
+        registry: { latestReleaseDate },
+        downloads: downloadCount,
+        dependencies
+    } = npmData.data;
+
     const releaseOffset = dayjs(latestReleaseDate).fromNow();
 
     return {
@@ -133,21 +137,6 @@ async function getDetailsForOutdatedNode(data: FrontMatterData): Promise<IData> 
     };
 }
 
-interface INpmData {
-    latestReleaseDate: string;
-    description: string;
-}
-
-async function getNpmData(name: string): Promise<INpmData> {
-    const response = await fetch(`https://registry.npmjs.org/${name}`);
-    const data = await response.json();
-
-    return {
-        latestReleaseDate: data.time[data["dist-tags"].latest],
-        description: data.description
-    };
-}
-
 function getBrowserSupport(id: string): string {
     const browsers: string[] = ["chrome", "firefox", "safari", "nodejs"];
 
@@ -201,32 +190,4 @@ function getDependencyString([dependencies, distinct]: [number, number]): string
     }
 
     return `${dependencies} (${distinct} distinct)`;
-}
-
-export interface DependencyNode {
-    name: string;
-    version: string;
-    dependencies: DependencyNode[];
-    isLoop: boolean;
-    subtreeCount: number;
-}
-
-export async function getDependencyTree(name: string): Promise<DependencyNode> {
-    const visitor = new Visitor([name], npmOnline, new OraLogger());
-    const root = await visitor.visit();
-
-    return buildDependencyNode(root);
-}
-
-function buildDependencyNode(pkg: Package): DependencyNode {
-    const dependencies = pkg.directDependencies.map(buildDependencyNode);
-    const subtreeCount = dependencies.reduce((acc, dep) => acc + 1 + dep.subtreeCount, 0);
-
-    return {
-        name: pkg.name,
-        version: pkg.version,
-        isLoop: pkg.isLoop,
-        dependencies,
-        subtreeCount
-    };
 }

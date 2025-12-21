@@ -1,5 +1,5 @@
 ---
-import { getDependencyTree } from "../../data";
+import { getEntry } from "astro:content";
 import Tree from "./Tree.astro";
 
 interface Props {
@@ -7,7 +7,13 @@ interface Props {
 }
 const { pkg } = Astro.props;
 
-const dependencyTree = await getDependencyTree(pkg);
+const npmData = await getEntry("npmData", pkg);
+
+if (!npmData) {
+    throw new Error(`No npmData found for ${pkg}`);
+}
+
+const { tree: dependencyTree } = npmData.data;
 ---
 
 {
