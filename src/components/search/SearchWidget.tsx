@@ -43,7 +43,7 @@ export const SearchWidget: FC<Props> = ({ tiles, showAllOnEmpty }) => {
     return (
         <section>
             <div className="text-search bg-search-bg flex rounded border-2 xl:rounded-2xl">
-                <div className="bg-search-icon-bg rounded-l px-4 py-2 pr-0 xl:rounded-l-2xl xl:py-4">
+                <div className="bg-search-icon-bg rounded-l px-4 py-2 xl:rounded-l-2xl xl:py-4">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -70,11 +70,13 @@ export const SearchWidget: FC<Props> = ({ tiles, showAllOnEmpty }) => {
                 />
             </div>
             <p className="text-muted my-2 text-sm italic">{infoText}</p>
-            <div className="search-results mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-                {filteredTiles.map(tile => (
-                    <Teaser key={tile.name} {...tile} searchString={searchString} />
-                ))}
-            </div>
+            {filteredTiles.length > 0 && (
+                <div className="search-results grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+                    {filteredTiles.map(tile => (
+                        <Teaser key={tile.name} {...tile} searchString={searchString} />
+                    ))}
+                </div>
+            )}
         </section>
     );
 };

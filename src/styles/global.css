@@ -59,7 +59,7 @@
 
         --color-search: theme(colors.indigo.400);
         --color-search-bg: var(--dark-background);
-        --color-search-icon-bg: var(--dark-background);
+        --color-search-icon-bg: var(--dark-surface);
 
         --color-title-from: theme(colors.purple.400);
         --color-title-to: theme(colors.cyan.300);
@@ -86,4 +86,11 @@ body.dark .astro-code span {
     font-style: var(--shiki-dark-font-style) !important;
     font-weight: var(--shiki-dark-font-weight) !important;
     text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+/* On mobile, hide the last "best-of" tile so the About section stays above the fold */
+@utility hide-second-to-last-best-of-on-mobile {
+    & > *:nth-last-child(2) {
+        @apply hidden sm:block;
+    }
 }
