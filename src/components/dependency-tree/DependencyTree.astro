@@ -13,7 +13,7 @@ const dependencyTree = await getDependencyTree(pkg);
 {
     dependencyTree.dependencies.length > 0 && (
         <section>
-            <div class="gradient prose dark:prose-invert mx-auto max-w-(--breakpoint-xl) max-w-none rounded py-12 md:py-8">
+            <div class="gradient prose dark:prose-invert mx-auto max-w-(--breakpoint-xl) max-w-none rounded">
                 <h3>Dependency Tree</h3>
                 <ul class="bg-background rounded p-2">
                     <Tree node={dependencyTree} />

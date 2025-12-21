@@ -83,9 +83,11 @@ const description = _description ?? fallbackDescription;
                 </div>
             </div>
         </header>
-        <div class="bg-surface px-4 sm:px-6 lg:px-8 xl:rounded-t-3xl xl:rounded-b-3xl">
+        <div
+            class="bg-surface flex flex-col gap-8 p-4 sm:p-6 xl:rounded-t-3xl xl:rounded-b-3xl xl:p-8"
+        >
             <slot />
-            <footer class="mb-8 py-4">
+            <footer>
                 <p class="text-center text-sm drop-shadow-lg">
                     <a
                         class="text-content decoration-accent underline decoration-2 underline-offset-2"
