@@ -1,4 +1,4 @@
-import { getEntry, type CollectionEntry } from "astro:content";
+import { getCollection, getEntry, type CollectionEntry } from "astro:content";
 import bcd from "@mdn/browser-compat-data" assert { type: "json" };
 import get from "lodash/get";
 
@@ -190,4 +190,12 @@ function getDependencyString([dependencies, distinct]: [number, number]): string
     }
 
     return `${dependencies} (${distinct} distinct)`;
+}
+
+export async function getDependencyCollection() {
+    const dependencies = await getCollection("dependencies");
+
+    return dependencies.sort((a, b) =>
+        a.data.name.toLowerCase().localeCompare(b.data.name.toLowerCase())
+    );
 }

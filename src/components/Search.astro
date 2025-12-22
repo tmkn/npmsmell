@@ -1,9 +1,8 @@
 ---
-import { getCollection } from "astro:content";
-
 import { SearchWidget, type FrontmatterData } from "./search/SearchWidget.tsx";
 import type { TeaserProps } from "./search/Teaser.tsx";
 import { getEntry } from "astro:content";
+import { getDependencyCollection } from "../data";
 
 interface Props {
     showAllOnEmpty: boolean;
@@ -12,7 +11,7 @@ interface Props {
 
 const { showAllOnEmpty, pathPrefix } = Astro.props;
 
-const allDependencies = await getCollection("dependencies");
+const allDependencies = await getDependencyCollection();
 const searchTiles: FrontmatterData[] = allDependencies.map(dependency => ({
     name: dependency.data.name,
     description: dependency.data.description,
