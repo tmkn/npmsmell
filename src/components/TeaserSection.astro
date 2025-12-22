@@ -1,15 +1,16 @@
 ---
-import { getCollection, getEntry } from "astro:content";
+import { getEntry } from "astro:content";
 
 import { Teaser, type TeaserProps } from "./search/Teaser.tsx";
 import { SMELL_URL } from "../common";
+import { getDependencyCollection } from "../data";
 
 interface Props {
     names: string[];
     highlight?: string;
 }
 
-const allDependencies = await getCollection("dependencies");
+const allDependencies = await getDependencyCollection();
 const { names } = Astro.props;
 
 const teasers: TeaserProps[] = await Promise.all(

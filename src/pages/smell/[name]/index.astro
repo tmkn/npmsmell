@@ -1,5 +1,4 @@
 ---
-import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 
 import Layout from "../../../layouts/Layout.astro";
@@ -8,6 +7,7 @@ import DependencyTree from "../../../components/dependency-tree/DependencyTree.a
 import type { DependencyType } from "../../../types";
 import Breadcrumbs from "../../../components/breadcrumbs/Breadcrumbs.astro";
 import { SMELL_URL } from "../../../common";
+import { getDependencyCollection } from "../../../data";
 
 interface Props {
     entry: CollectionEntry<"dependencies">;
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export async function getStaticPaths() {
-    const allDependencies = await getCollection("dependencies");
+    const allDependencies = await getDependencyCollection();
 
     return allDependencies.map(entry => ({
         params: { name: entry.data.name },

@@ -15,7 +15,8 @@ export function npmDataLoader(): Loader {
             const totalPackages = packages.length;
 
             for (const [i, pkgName] of packages.entries()) {
-                context.logger.info(`[${i + 1}/${totalPackages}] processing ${pkgName}`);
+                const prefix = progress(i, totalPackages);
+                context.logger.info(`${prefix} processing ${pkgName}`);
 
                 const data = await getPackageMetaData(pkgName);
 
@@ -31,4 +32,10 @@ export function npmDataLoader(): Loader {
             }
         }
     };
+}
+
+function progress(i: number, total: number): string {
+    const width = String(total).length;
+
+    return `[${String(i + 1).padStart(width, " ")}/${total}]`;
 }
