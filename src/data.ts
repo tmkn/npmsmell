@@ -86,7 +86,7 @@ async function getDetailsForTrivial(data: FrontMatterData): Promise<IData> {
             ...sharedData.sections,
             {
                 title: "Trivial",
-                subtitle: "The provided functionality does not warrant its own package"
+                subtitle: "This functionality does not warrant a dedicated package"
             }
         ]
     };
@@ -103,7 +103,7 @@ async function getDetailsForOutdatedJS(data: FrontMatterData): Promise<IData> {
             ...sharedData.sections,
             {
                 title: "Outdated",
-                subtitle: `This dependency re-creates a native JavaScript API. It is recommended to use the native API instead`
+                subtitle: `This dependency reimplements a native JavaScript API`
             },
             {
                 title: browserSupport,
