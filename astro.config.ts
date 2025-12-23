@@ -1,5 +1,5 @@
 import { defineConfig } from "astro/config";
-import { remarkDependencyData } from "./src/remarkPluginDependencyData";
+import { remarkPlaceholderPlugin } from "./src/remarkPlaceholderPlugin";
 
 import react from "@astrojs/react";
 
@@ -10,7 +10,7 @@ export default defineConfig({
     integrations: [react()],
 
     markdown: {
-        remarkPlugins: [remarkDependencyData],
+        remarkPlugins: [remarkPlaceholderPlugin],
         shikiConfig: {
             themes: {
                 light: "light-plus",
