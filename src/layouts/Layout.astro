@@ -1,5 +1,6 @@
 ---
 import Badge from "../components/Badge.tsx";
+import MatrixBackground from "../components/MatrixBackground.astro";
 import ThemeToggler from "../components/ThemeToggler.astro";
 
 import "../styles/global.css";
@@ -46,6 +47,7 @@ const description = _description ?? fallbackDescription;
         </script>
     </head>
     <body class="bg-background mx-auto max-w-(--breakpoint-xl)">
+        <MatrixBackground />
         <script is:inline>
             if (
                 localStorage.getItem("theme") === "dark" ||
@@ -56,6 +58,11 @@ const description = _description ?? fallbackDescription;
             } else {
                 document.body.classList.remove("dark");
             }
+
+            // show snowflakes only in Dec, Jan
+            document
+                .getElementById("matrix-canvas")
+                ?.classList.add([11, 0].includes(new Date().getMonth()) ? "block" : "hidden");
         </script>
         <header>
             <div class="px-4 py-8 sm:px-6 sm:py-8 lg:px-8">
