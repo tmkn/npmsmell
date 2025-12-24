@@ -1,24 +1,23 @@
 import type { Loader, LoaderContext } from "astro/loaders";
 import fs from "node:fs";
-
-import { getPackageMetaData } from "./npm";
+import type { PackageMetaData } from "../ingest/src/npm";
 
 export function npmDataLoader(): Loader {
     return {
         name: "npm-data-loader",
 
         load: async (context: LoaderContext): Promise<void> => {
-            const files = fs.readdirSync("src/content/dependencies");
-            const packages = files
-                .filter(name => name.endsWith(".md"))
-                .map(name => name.replace(/\.md$/, ""));
-            const totalPackages = packages.length;
+            const files = fs
+                .readdirSync("metadata/packages", { withFileTypes: true })
+                .filter(entry => entry.isFile() && entry.name.endsWith(".json"));
+            const totalPackages = files.length;
 
-            for (const [i, pkgName] of packages.entries()) {
+            for (const [i, entry] of files.entries()) {
                 const prefix = progress(i, totalPackages);
+                const pkgName = entry.name.replace(/\.json$/, "");
                 context.logger.info(`${prefix} processing ${pkgName}`);
 
-                const data = await getPackageMetaData(pkgName);
+                const data = loadMetadata(pkgName);
 
                 const npmData = await context.parseData({
                     id: pkgName,
@@ -32,6 +31,13 @@ export function npmDataLoader(): Loader {
             }
         }
     };
+}
+
+export function loadMetadata(pkgName: string): PackageMetaData {
+    const fileContent = fs.readFileSync(`metadata/packages/${pkgName}.json`, "utf-8");
+    const data = JSON.parse(fileContent);
+
+    return data;
 }
 
 function progress(i: number, total: number): string {

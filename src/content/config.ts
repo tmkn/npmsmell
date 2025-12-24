@@ -2,7 +2,7 @@ import { defineCollection } from "astro:content";
 
 import { DependencyTypes } from "../types";
 import { npmDataLoader } from "../npmDataLoader";
-import { PackageMetaDataSchema } from "../npm";
+import { PackageMetaDataSchema } from "../../ingest/src/npm";
 
 const dependencies = defineCollection({
     type: "content", // v2.5.0 and later

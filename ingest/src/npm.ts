@@ -23,7 +23,7 @@ export async function getRegistryData(name: string): Promise<IRegistryData> {
         queryKey: ["registry", name],
         queryFn: async ({ signal }) => {
             const response = await fetch(`https://registry.npmjs.org/${name}`, { signal });
-            const data = await response.json();
+            const data: any = await response.json();
 
             return {
                 latestReleaseDate: data.time[data["dist-tags"].latest],
@@ -89,7 +89,7 @@ export async function getWeeklyDownloads(name: string): Promise<number> {
                 { signal }
             );
 
-            const data = await response.json();
+            const data: any = await response.json();
 
             return data.downloads;
         }
@@ -140,41 +140,10 @@ export const PackageMetaDataSchema = TeaserDataSchema.merge(
 
 export type PackageMetaData = z.infer<typeof PackageMetaDataSchema>;
 
-// To have some real data during development
-const bypassMock: string[] = ["is-string"];
-
 export async function getPackageMetaData(name: string): Promise<PackageMetaData> {
-    if (import.meta.env.DEV && !bypassMock.includes(name)) {
-        return getMockPackageMetaData(name);
-    }
-
     const teaserData = await getTeaserData(name);
     const tree = await getDependencyTree(name);
     const registry = await getRegistryData(name);
-
-    return {
-        ...teaserData,
-        tree,
-        registry
-    };
-}
-
-function getMockPackageMetaData(name: string): PackageMetaData {
-    const teaserData: ITeaserData = {
-        downloads: 1000,
-        dependencies: [10, 7]
-    };
-    const tree: DependencyNode = {
-        name,
-        version: "1.0.0",
-        dependencies: [],
-        isLoop: false,
-        subtreeCount: 0
-    };
-    const registry: IRegistryData = {
-        latestReleaseDate: "2025-01-01T00:00:00.000Z",
-        description: "This is a mock package description."
-    };
 
     return {
         ...teaserData,

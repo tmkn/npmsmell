@@ -12,7 +12,9 @@
         "check": "astro check",
         "test:e2e": "playwright test",
         "test:e2e:ui": "playwright test --ui",
-        "test:unit": "vitest run"
+        "test:unit": "vitest run",
+        "ingest:build": "tsc --build ingest/tsconfig.json",
+        "ingest:build:watch": "tsc --build --watch ingest/tsconfig.json"
     },
     "dependencies": {
         "@astrojs/check": "^0.9.6",

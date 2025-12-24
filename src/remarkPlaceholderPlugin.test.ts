@@ -4,19 +4,36 @@ import type { VFile } from "vfile";
 import { toString } from "mdast-util-to-string";
 
 import { remarkPlaceholderPlugin } from "./remarkPlaceholderPlugin";
-import type { getWeeklyDownloads, getDependencies } from "./npm";
+import type { loadMetadata } from "./npmDataLoader";
+import type { PackageMetaData } from "../ingest/src/npm";
 
 const mocks = vi.hoisted(() => {
     return {
-        mockGetWeeklyDownloads: vi.fn<typeof getWeeklyDownloads>(),
-        mockGetDependencies: vi.fn<typeof getDependencies>()
+        mockLoadMetadata: vi.fn<typeof loadMetadata>()
     };
 });
 
-vi.mock("./npm", () => ({
-    getWeeklyDownloads: mocks.mockGetWeeklyDownloads,
-    getDependencies: mocks.mockGetDependencies
+vi.mock(import("./npmDataLoader"), () => ({
+    loadMetadata: mocks.mockLoadMetadata
 }));
+
+function createMockPackageMetaData(): PackageMetaData {
+    return {
+        downloads: 0,
+        dependencies: [0, 0],
+        tree: {
+            name: "example-package",
+            version: "1.0.0",
+            dependencies: [],
+            subtreeCount: 0,
+            isLoop: false
+        },
+        registry: {
+            latestReleaseDate: new Date("2026-01-01").toISOString(),
+            description: "A sample package"
+        }
+    };
+}
 
 const createMockRoot = (text: string): Root => {
     return {
@@ -37,39 +54,45 @@ describe("remarkPlaceholderPlugin", () => {
 
     it("replaces {{downloads}} correctly", async () => {
         const tree = createMockRoot("Downloads: {{downloads}}");
+        const mockPackageData = createMockPackageMetaData();
+        mockPackageData.downloads = 9999;
 
-        mocks.mockGetWeeklyDownloads.mockResolvedValue(9999);
+        mocks.mockLoadMetadata.mockReturnValue(mockPackageData);
 
         const plugin = remarkPlaceholderPlugin();
         await plugin(tree, file);
 
         const text = toString(tree);
         expect(text).toEqual("Downloads: 9,999");
-        expect(mocks.mockGetWeeklyDownloads).toHaveBeenCalledWith("example-package");
+        expect(mocks.mockLoadMetadata).toHaveBeenCalledWith("example-package");
     });
 
     it("replaces {{dependencies}} correctly", async () => {
         const tree = createMockRoot("Dependencies: {{dependencies}}");
+        const mockPackageData = createMockPackageMetaData();
+        mockPackageData.dependencies = [42, 0];
 
-        mocks.mockGetDependencies.mockResolvedValue([42, 0]);
+        mocks.mockLoadMetadata.mockReturnValue(mockPackageData);
         const plugin = remarkPlaceholderPlugin();
         await plugin(tree, file);
 
         const text = toString(tree);
         expect(text).toEqual("Dependencies: 42");
-        expect(mocks.mockGetDependencies).toHaveBeenCalledWith("example-package");
+        expect(mocks.mockLoadMetadata).toHaveBeenCalledWith("example-package");
     });
 
     it("replaces {{distinct_dependencies}} correctly", async () => {
         const tree = createMockRoot("Distinct: {{distinct_dependencies}}");
+        const mockPackageData = createMockPackageMetaData();
+        mockPackageData.dependencies = [0, 7];
 
-        mocks.mockGetDependencies.mockResolvedValue([0, 7]);
+        mocks.mockLoadMetadata.mockReturnValue(mockPackageData);
         const plugin = remarkPlaceholderPlugin();
         await plugin(tree, file);
 
         const text = toString(tree);
         expect(text).toEqual("Distinct: 7");
-        expect(mocks.mockGetDependencies).toHaveBeenCalledWith("example-package");
+        expect(mocks.mockLoadMetadata).toHaveBeenCalledWith("example-package");
     });
 
     it("throws an error if name is missing", async () => {

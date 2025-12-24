@@ -3,7 +3,7 @@ import type { VFile } from "vfile";
 import { findAndReplace } from "mdast-util-find-and-replace";
 import { toString } from "mdast-util-to-string";
 
-import { getDependencies, getWeeklyDownloads } from "./npm";
+import { loadMetadata } from "./npmDataLoader";
 
 interface IPlaceholderToken {
     token: string;
@@ -13,20 +13,26 @@ interface IPlaceholderToken {
 const PLACEHOLDER_TOKENS: IPlaceholderToken[] = [
     {
         token: "{{downloads}}",
-        data: async name => (await getWeeklyDownloads(name)).toLocaleString("en-US")
+        data: async name => {
+            const data = loadMetadata(name);
+
+            return data.downloads.toLocaleString("en-US");
+        }
     },
     {
         token: "{{dependencies}}",
         data: async name => {
-            const [dependencies] = await getDependencies(name);
-            return dependencies.toLocaleString();
+            const data = loadMetadata(name);
+
+            return data.dependencies[0].toLocaleString("en-US");
         }
     },
     {
         token: "{{distinct_dependencies}}",
         data: async name => {
-            const [, distinct] = await getDependencies(name);
-            return distinct.toLocaleString("en-US");
+            const data = loadMetadata(name);
+
+            return data.dependencies[1].toLocaleString("en-US");
         }
     }
 ];
