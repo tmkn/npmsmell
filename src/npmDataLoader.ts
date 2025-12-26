@@ -1,7 +1,7 @@
 import type { Loader, LoaderContext } from "astro/loaders";
 import fs from "node:fs";
 
-import { getPackageMetaData } from "./npm";
+import { getPackageMetaData, hasCachedMetadata } from "./npm";
 
 export function npmDataLoader(): Loader {
     return {
@@ -15,10 +15,9 @@ export function npmDataLoader(): Loader {
             const totalPackages = packages.length;
 
             for (const [i, pkgName] of packages.entries()) {
-                const prefix = progress(i, totalPackages);
-                context.logger.info(`${prefix} processing ${pkgName}`);
+                context.logger.info(getProgressMessage(pkgName, i, totalPackages));
 
-                const data = await getPackageMetaData(pkgName);
+                const data = await getPackageMetaData(pkgName, context);
 
                 const npmData = await context.parseData({
                     id: pkgName,
@@ -38,4 +37,14 @@ function progress(i: number, total: number): string {
     const width = String(total).length;
 
     return `[${String(i + 1).padStart(width, " ")}/${total}]`;
+}
+
+function getProgressMessage(packageName: string, i: number, totalPackages: number): string {
+    const prefix = progress(i, totalPackages);
+
+    if (hasCachedMetadata(packageName)) {
+        return `${prefix} skipping ${packageName} (cached)`;
+    } else {
+        return `${prefix} processing ${packageName}`;
+    }
 }

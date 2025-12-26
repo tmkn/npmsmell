@@ -1,6 +1,10 @@
+import path from "node:path";
+import fs from "node:fs";
 import { QueryClient } from "@tanstack/query-core";
 import { Visitor, npmOnline, OraLogger, Package } from "@tmkn/packageanalyzer";
+import type { LoaderContext } from "astro/loaders";
 import { z } from "astro/zod";
+import stringify from "fast-json-stable-stringify";
 
 const cache = new QueryClient({
     defaultOptions: {
@@ -140,45 +144,52 @@ export const PackageMetaDataSchema = TeaserDataSchema.merge(
 
 export type PackageMetaData = z.infer<typeof PackageMetaDataSchema>;
 
-// To have some real data during development
-const bypassMock: string[] = ["is-string"];
-
-export async function getPackageMetaData(name: string): Promise<PackageMetaData> {
-    if (import.meta.env.DEV && !bypassMock.includes(name)) {
-        return getMockPackageMetaData(name);
+export async function getPackageMetaData(
+    name: string,
+    context: LoaderContext
+): Promise<PackageMetaData> {
+    if (hasCachedMetadata(name)) {
+        return getCachedMetadata(name, context);
+    } else {
+        return resolveMetadata(name, context);
     }
+}
 
+const CACHE_DIR = path.join(process.cwd(), "metadata", "packages");
+
+function getCachedFilePath(name: string): string {
+    return path.join(CACHE_DIR, `${name}.json`);
+}
+
+export function hasCachedMetadata(name: string): boolean {
+    return fs.existsSync(getCachedFilePath(name));
+}
+
+async function getCachedMetadata(name: string, context: LoaderContext): Promise<PackageMetaData> {
+    const filePath = getCachedFilePath(name);
+    const fileContent = fs.readFileSync(filePath, "utf-8");
+    const data = JSON.parse(fileContent);
+
+    return data;
+}
+
+async function resolveMetadata(name: string, context: LoaderContext): Promise<PackageMetaData> {
     const teaserData = await getTeaserData(name);
     const tree = await getDependencyTree(name);
     const registry = await getRegistryData(name);
 
-    return {
+    const data: PackageMetaData = {
         ...teaserData,
         tree,
         registry
     };
-}
 
-function getMockPackageMetaData(name: string): PackageMetaData {
-    const teaserData: ITeaserData = {
-        downloads: 1000,
-        dependencies: [10, 7]
-    };
-    const tree: DependencyNode = {
-        name,
-        version: "1.0.0",
-        dependencies: [],
-        isLoop: false,
-        subtreeCount: 0
-    };
-    const registry: IRegistryData = {
-        latestReleaseDate: "2025-01-01T00:00:00.000Z",
-        description: "This is a mock package description."
-    };
+    // save to cache
+    if (!fs.existsSync(CACHE_DIR)) {
+        fs.mkdirSync(CACHE_DIR, { recursive: true });
+    }
+    const filePath = getCachedFilePath(name);
+    fs.writeFileSync(filePath, stringify(data), "utf-8");
 
-    return {
-        ...teaserData,
-        tree,
-        registry
-    };
+    return data;
 }

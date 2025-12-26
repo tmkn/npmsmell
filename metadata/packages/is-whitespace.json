@@ -1,0 +1,1 @@
+{"dependencies":[0,0],"downloads":652383,"registry":{"description":"Returns true if the value passed is all whitespace.","latestReleaseDate":"2015-03-31T17:42:55.881Z"},"tree":{"dependencies":[],"isLoop":false,"name":"is-whitespace","subtreeCount":0,"version":"0.3.0"}}
