@@ -1,0 +1,1 @@
+{"dependencies":[0,0],"downloads":2870831,"registry":{"description":"Array-slice method. Slices `array` from the `start` index up to, but not including, the `end` index.","latestReleaseDate":"2017-11-30T13:12:23.160Z"},"tree":{"dependencies":[],"isLoop":false,"name":"array-slice","subtreeCount":0,"version":"1.1.0"}}

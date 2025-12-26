@@ -1,0 +1,1 @@
+{"dependencies":[0,0],"downloads":49682444,"registry":{"description":"Determines if an object can be used as an array","latestReleaseDate":"2025-09-13T16:44:23.359Z"},"tree":{"dependencies":[],"isLoop":false,"name":"is-arrayish","subtreeCount":0,"version":"0.3.4"}}

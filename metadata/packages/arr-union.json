@@ -1,0 +1,1 @@
+{"dependencies":[0,0],"downloads":7994644,"registry":{"description":"Combines a list of arrays, returning a single array with unique values, using strict equality for comparisons.","latestReleaseDate":"2016-02-23T12:54:40.819Z"},"tree":{"dependencies":[],"isLoop":false,"name":"arr-union","subtreeCount":0,"version":"3.1.0"}}

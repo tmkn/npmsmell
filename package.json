@@ -38,6 +38,7 @@
         "@types/lodash": "^4.17.21",
         "@types/react": "^19.2.7",
         "@types/react-dom": "^19.2.3",
+        "fast-json-stable-stringify": "^2.1.0",
         "jsdom": "^27.3.0",
         "prettier": "^3.7.4",
         "prettier-plugin-astro": "^0.14.1",
