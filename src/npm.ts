@@ -144,36 +144,43 @@ export const PackageMetaDataSchema = TeaserDataSchema.merge(
 
 export type PackageMetaData = z.infer<typeof PackageMetaDataSchema>;
 
-export async function getPackageMetaData(
+export async function getPackageMetadata(
     name: string,
-    context: LoaderContext
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _context: LoaderContext
 ): Promise<PackageMetaData> {
     if (hasCachedMetadata(name)) {
-        return getCachedMetadata(name, context);
+        return getCachedMetadata(name);
     } else {
-        return resolveMetadata(name, context);
+        return resolveMetadata(name);
     }
 }
 
 const CACHE_DIR = path.join(process.cwd(), "metadata", "packages");
 
-function getCachedFilePath(name: string): string {
-    return path.join(CACHE_DIR, `${name}.json`);
+export function getCacheDir(name: string): string {
+    return path.join(CACHE_DIR, ...name.split("/"));
+}
+
+function getCachePathForMetadata(name: string): string {
+    const cacheDir = getCacheDir(name);
+
+    return path.join(cacheDir, "metadata.json");
 }
 
 export function hasCachedMetadata(name: string): boolean {
-    return fs.existsSync(getCachedFilePath(name));
+    return fs.existsSync(getCachePathForMetadata(name));
 }
 
-async function getCachedMetadata(name: string, context: LoaderContext): Promise<PackageMetaData> {
-    const filePath = getCachedFilePath(name);
+async function getCachedMetadata(name: string): Promise<PackageMetaData> {
+    const filePath = getCachePathForMetadata(name);
     const fileContent = fs.readFileSync(filePath, "utf-8");
     const data = JSON.parse(fileContent);
 
     return data;
 }
 
-async function resolveMetadata(name: string, context: LoaderContext): Promise<PackageMetaData> {
+async function resolveMetadata(name: string): Promise<PackageMetaData> {
     const teaserData = await getTeaserData(name);
     const tree = await getDependencyTree(name);
     const registry = await getRegistryData(name);
@@ -185,11 +192,14 @@ async function resolveMetadata(name: string, context: LoaderContext): Promise<Pa
     };
 
     // save to cache
-    if (!fs.existsSync(CACHE_DIR)) {
-        fs.mkdirSync(CACHE_DIR, { recursive: true });
+    const cacheDirForPackage = getCacheDir(name);
+    const cachePathMetdata = getCachePathForMetadata(name);
+
+    if (!fs.existsSync(cacheDirForPackage)) {
+        fs.mkdirSync(cacheDirForPackage, { recursive: true });
     }
-    const filePath = getCachedFilePath(name);
-    fs.writeFileSync(filePath, stringify(data), "utf-8");
+
+    fs.writeFileSync(cachePathMetdata, stringify(data), "utf-8");
 
     return data;
 }

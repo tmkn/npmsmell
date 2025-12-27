@@ -1,0 +1,1 @@
+{"dependencies":[0,0],"downloads":15906822,"registry":{"description":"Transforms the string to lower case","latestReleaseDate":"2023-09-30T01:31:36.425Z"},"tree":{"dependencies":[],"isLoop":false,"name":"lower-case","subtreeCount":0,"version":"3.0.0"}}

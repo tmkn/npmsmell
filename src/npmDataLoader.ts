@@ -1,7 +1,7 @@
 import type { Loader, LoaderContext } from "astro/loaders";
 import fs from "node:fs";
 
-import { getPackageMetaData, hasCachedMetadata } from "./npm";
+import { getPackageMetadata, hasCachedMetadata } from "./npm";
 
 export function npmDataLoader(): Loader {
     return {
@@ -17,7 +17,7 @@ export function npmDataLoader(): Loader {
             for (const [i, pkgName] of packages.entries()) {
                 context.logger.info(getProgressMessage(pkgName, i, totalPackages));
 
-                const data = await getPackageMetaData(pkgName, context);
+                const data = await getPackageMetadata(pkgName, context);
 
                 const npmData = await context.parseData({
                     id: pkgName,

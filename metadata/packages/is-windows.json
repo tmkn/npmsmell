@@ -1,1 +1,0 @@
-{"dependencies":[0,0],"downloads":15388673,"registry":{"description":"Returns true if the platform is windows. UMD module, works with node.js, commonjs, browser, AMD, electron, etc.","latestReleaseDate":"2018-02-14T07:36:43.207Z"},"tree":{"dependencies":[],"isLoop":false,"name":"is-windows","subtreeCount":0,"version":"1.0.2"}}

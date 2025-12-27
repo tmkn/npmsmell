@@ -1,1 +1,0 @@
-{"dependencies":[0,0],"downloads":8723994,"registry":{"description":"Remove duplicate values from an array. Fastest ES5 implementation.","latestReleaseDate":"2016-08-01T00:54:49.804Z"},"tree":{"dependencies":[],"isLoop":false,"name":"array-unique","subtreeCount":0,"version":"0.3.2"}}
