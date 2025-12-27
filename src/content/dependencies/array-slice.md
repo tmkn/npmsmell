@@ -1,6 +1,6 @@
 ---
 name: array-slice
-description: Reimplements the native Array.prototype.slice() method.
+description: Reimplements the native `Array.prototype.slice()` method.
 type: obsolete-js
 implementation: javascript.builtins.Array.slice
 ---

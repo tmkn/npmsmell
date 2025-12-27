@@ -127,7 +127,7 @@ async function getDetailsForTrivial(data: FrontMatterData): Promise<IData> {
             ...sharedData.sections,
             {
                 title: "Trivial",
-                subtitle: "This functionality does not warrant a dedicated package"
+                subtitle: "Better as a utility function"
             }
         ]
     };
@@ -144,7 +144,7 @@ async function getDetailsForOutdatedJS(data: FrontMatterData): Promise<IData> {
             ...sharedData.sections,
             {
                 title: "Outdated",
-                subtitle: `This dependency reimplements a native JavaScript API`
+                subtitle: `Switch to the native implementation.`
             },
             {
                 title: browserSupport,
@@ -163,8 +163,8 @@ async function getDetailsForOutdatedNode(data: FrontMatterData): Promise<IData> 
         sections: [
             ...sharedData.sections,
             {
-                title: "Outedated",
-                subtitle: `This dependency re-creates a native Node.js API. It is recommended to use the native API instead`
+                title: "Outdated",
+                subtitle: `Switch to the native implementation.`
             },
             {
                 title: `Node.js ${obsoleteNodeData.version}`,

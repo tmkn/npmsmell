@@ -1,4 +1,6 @@
 ---
+import { marked } from "marked";
+
 import type { DependencyType } from "../types";
 import type { ISection } from "../data";
 import Badge from "./Badge.tsx";
@@ -16,6 +18,7 @@ interface Props {
 }
 
 const { title, tag, description, sections } = Astro.props;
+const parsedDescription = marked.parseInline(description);
 ---
 
 <section>
@@ -42,13 +45,14 @@ const { title, tag, description, sections } = Astro.props;
                 >
             </h2>
 
-            <p class="text-muted-subtle mt-4 sm:text-xl">
-                {description}
-            </p>
+            <p
+                class="text-muted-subtle highlight-code mt-4 sm:text-xl"
+                set:html={parsedDescription}
+            />
         </div>
 
         <div class="mt-8 sm:mt-12">
-            <dl class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <dl class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {sections.map(section => <DetailCardSection {...section} />)}
             </dl>
         </div>

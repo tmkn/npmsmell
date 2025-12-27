@@ -1,6 +1,6 @@
 ---
 name: define-property
-description: Reimplements the native Object.defineProperty() method.
+description: Reimplements the native `Object.defineProperty()` method.
 type: obsolete-js
 implementation: javascript.builtins.Object.defineProperty
 ---

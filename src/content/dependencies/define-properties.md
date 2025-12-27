@@ -1,6 +1,6 @@
 ---
 name: define-properties
-description: Convoluted way of calling Object.defineProperties.
+description: Convoluted way of calling `Object.defineProperties()`.
 type: obsolete-js
 implementation: javascript.builtins.Object.defineProperties
 ---

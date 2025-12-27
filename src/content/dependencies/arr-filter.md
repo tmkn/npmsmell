@@ -1,6 +1,6 @@
 ---
 name: arr-filter
-description: Reimplements the native Array.prototype.filter() method.
+description: Reimplements the native `Array.prototype.filter()` method.
 type: obsolete-js
 implementation: javascript.builtins.Array.filter
 ---

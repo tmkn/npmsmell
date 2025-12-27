@@ -1,6 +1,6 @@
 ---
 name: array-each
-description: Reimplements the native Array.prototype.forEach() method.
+description: Reimplements the native `Array.prototype.forEach()` method.
 type: obsolete-js
 implementation: javascript.builtins.Array.forEach
 ---
