@@ -1,4 +1,5 @@
 import { useMemo, type FC } from "react";
+import { marked } from "marked";
 
 import { Badge } from "../Badge.tsx";
 import type { FrontmatterData } from "./SearchWidget.tsx";
@@ -24,6 +25,7 @@ export const Teaser: FC<TeaserProps> = ({
     distinctDependencies,
     searchString
 }) => {
+    const parsedDescription = marked.parseInline(description);
     const dependenciesString = useMemo<string>(() => {
         if (dependencies === distinctDependencies) {
             return `${dependencies}`;
@@ -69,7 +71,10 @@ export const Teaser: FC<TeaserProps> = ({
             </div>
 
             <div className="mt-4">
-                <p className="text-muted-subtle text-sm">{description}</p>
+                <p
+                    className="text-muted-subtle highlight-code-wrap text-sm"
+                    dangerouslySetInnerHTML={{ __html: parsedDescription }}
+                />
             </div>
 
             <dl className="mt-6 flex gap-4 sm:gap-6">

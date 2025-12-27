@@ -94,3 +94,17 @@ body.dark .astro-code span {
         @apply hidden sm:block;
     }
 }
+
+:where(.highlight-code, .highlight-code-wrap) code {
+    padding: 2px 6px;
+    background: var(--color-background);
+    border-radius: 0.375rem;
+}
+
+.highlight-code code {
+    white-space: nowrap;
+}
+
+.highlight-code-wrap code {
+    white-space: break-spaces;
+}

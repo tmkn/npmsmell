@@ -1,7 +1,7 @@
 ---
 name: extend-shallow
 type: obsolete-js
-description: Reimplements the native Object.assign() method.
+description: Reimplements the native `Object.assign()` method.
 #implementation: javascript.operators.spread
 implementation: javascript.builtins.Object.assign
 ---

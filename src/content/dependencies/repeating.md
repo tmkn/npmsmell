@@ -1,6 +1,6 @@
 ---
 name: repeating
-description: Convoluted way to call String.prototype.repeat
+description: Convoluted way to call `String.prototype.repeat()`
 type: obsolete-js
 implementation: javascript.builtins.String.repeat
 ---

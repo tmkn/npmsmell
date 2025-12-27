@@ -1,6 +1,6 @@
 ---
 name: is-windows
-description: Convoluted way to call process.platform === "win32"
+description: A convoluted way of checking `process.platform === "win32"`
 type: trivial
 ---
 

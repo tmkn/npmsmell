@@ -1,7 +1,7 @@
 ---
 name: for-in
 type: obsolete-js
-description: Recreates the behavior of the native for...in statement.
+description: Recreates the behavior of the native `for...in` statement.
 implementation: javascript.statements.for_in
 ---
 
