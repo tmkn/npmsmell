@@ -1,1 +1,0 @@
-{"dependencies":[0,0],"downloads":9498086,"registry":{"description":"Returns an array with only the unique values from the first array, by excluding all values from additional arrays using strict equality for comparisons.","latestReleaseDate":"2017-04-14T04:11:29.824Z"},"tree":{"dependencies":[],"isLoop":false,"name":"arr-diff","subtreeCount":0,"version":"4.0.0"}}

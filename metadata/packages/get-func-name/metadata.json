@@ -1,0 +1,1 @@
+{"dependencies":[0,0],"downloads":5244842,"registry":{"description":"Utility for getting a function's name for node and the browser","latestReleaseDate":"2023-09-26T10:12:07.410Z"},"tree":{"dependencies":[],"isLoop":false,"name":"get-func-name","subtreeCount":0,"version":"3.0.0"}}
