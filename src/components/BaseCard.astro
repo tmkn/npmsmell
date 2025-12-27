@@ -1,5 +1,6 @@
 ---
 import type { DependencyType } from "../types";
+import type { ISection } from "../data";
 import Badge from "./Badge.tsx";
 import DetailCardSection from "./DetailCardSection.astro";
 
@@ -11,10 +12,7 @@ interface Props {
     title: string;
     tag: DependencyType;
     description: string;
-    sections: {
-        title: string;
-        subtitle: string;
-    }[];
+    sections: ISection[];
 }
 
 const { title, tag, description, sections } = Astro.props;

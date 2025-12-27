@@ -1,19 +1,80 @@
 ---
+import { TrendWeeksDefault, type Trend } from "../util";
+import Sparkline from "./Sparkline.astro";
+
 interface Props {
     title: string;
     subtitle: string;
     wobble?: boolean;
+    sparkline?: number[];
+    trend?: Trend;
 }
-const { title, subtitle, wobble = false } = Astro.props;
+const { title, subtitle, wobble = false, sparkline, trend } = Astro.props;
 ---
 
-<div class="flex flex-col rounded-lg border border-slate-200 px-4 py-2 text-center sm:py-8">
+<div
+    class="relative flex flex-col overflow-hidden rounded-lg border border-slate-200 px-4 py-2 text-center sm:py-8"
+>
+    {
+        sparkline && (
+            <div class="text-card-border absolute inset-0 -z-10 flex items-center opacity-70">
+                <Sparkline data={sparkline} />
+            </div>
+        )
+    }
     <dt class:list={[{ "vibrate-1": wobble }, "text-md text-muted-subtle order-last font-medium"]}>
         {subtitle}
     </dt>
 
-    <dd class:list={[{ "vibrate-1": wobble }, "text-wobble text-xl font-extrabold"]}>
+    <dd
+        class:list={[
+            { "vibrate-1": wobble },
+            "text-wobble flex items-center justify-center gap-2 text-xl font-extrabold"
+        ]}
+    >
         {title}
+        {
+            trend === "increasing" && (
+                <span
+                    class="text-green-500"
+                    title={`Trending up (last ${TrendWeeksDefault} weeks)`}
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        class="h-5 w-5"
+                    >
+                        <path
+                            fill-rule="evenodd"
+                            d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z"
+                            clip-rule="evenodd"
+                        />
+                    </svg>
+                </span>
+            )
+        }
+        {
+            trend === "decreasing" && (
+                <span
+                    class="text-red-500"
+                    title={`Trending down (last ${TrendWeeksDefault} weeks)`}
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        class="h-5 w-5"
+                    >
+                        <path
+                            fill-rule="evenodd"
+                            d="M12 13a1 1 0 110 2h5a1 1 0 011-1V9a1 1 0 11-2 0v2.586l-4.293-4.293a1 1 0 01-1.414 0L8 9.586 3.707 5.293a1 1 0 01-1.414 1.414l5 5a1 1 0 011.414 0L11 9.414 14.586 13H12z"
+                            clip-rule="evenodd"
+                        />
+                    </svg>
+                </span>
+            )
+        }
     </dd>
 </div>
 
