@@ -1,12 +1,21 @@
 import type { Loader, LoaderContext } from "astro/loaders";
+import { z } from "astro/zod";
 import fs from "node:fs";
 
-import { getPackageMetadata, hasCachedMetadata } from "./npm";
+import { getTrendlineData, hasCachedTrendline } from "./npm";
 import { getProgressMessage } from "./util";
 
-export function npmDataLoader(): Loader {
+const dateKey = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, {
+    message: "Invalid date format, expected YYYY-MM-DD"
+});
+
+export const TrendlineSchema = z.record(dateKey, z.number().int().nonnegative());
+
+export type TrendlineData = z.infer<typeof TrendlineSchema>;
+
+export function downloadTrendDataLoader(): Loader {
     return {
-        name: "npm-data-loader",
+        name: "trends-loader",
 
         load: async (context: LoaderContext): Promise<void> => {
             const files = fs.readdirSync("src/content/dependencies");
@@ -17,10 +26,10 @@ export function npmDataLoader(): Loader {
 
             for (const [i, pkgName] of packages.entries()) {
                 context.logger.info(
-                    getProgressMessage(pkgName, i, totalPackages, hasCachedMetadata)
+                    getProgressMessage(pkgName, i, totalPackages, hasCachedTrendline)
                 );
 
-                const data = await getPackageMetadata(pkgName);
+                const data = await getTrendlineData(pkgName);
 
                 const npmData = await context.parseData({
                     id: pkgName,

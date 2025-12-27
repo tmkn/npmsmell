@@ -5,6 +5,7 @@ import { Visitor, npmOnline, OraLogger, Package } from "@tmkn/packageanalyzer";
 import type { LoaderContext } from "astro/loaders";
 import { z } from "astro/zod";
 import stringify from "fast-json-stable-stringify";
+import type { TrendlineData } from "./downloadTrendDataLoader";
 
 const cache = new QueryClient({
     defaultOptions: {
@@ -144,11 +145,7 @@ export const PackageMetaDataSchema = TeaserDataSchema.merge(
 
 export type PackageMetaData = z.infer<typeof PackageMetaDataSchema>;
 
-export async function getPackageMetadata(
-    name: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _context: LoaderContext
-): Promise<PackageMetaData> {
+export async function getPackageMetadata(name: string): Promise<PackageMetaData> {
     if (hasCachedMetadata(name)) {
         return getCachedMetadata(name);
     } else {
@@ -168,8 +165,18 @@ function getCachePathForMetadata(name: string): string {
     return path.join(cacheDir, "metadata.json");
 }
 
+function getCachePathForTrendline(name: string): string {
+    const cacheDir = getCacheDir(name);
+
+    return path.join(cacheDir, "trendline.json");
+}
+
 export function hasCachedMetadata(name: string): boolean {
     return fs.existsSync(getCachePathForMetadata(name));
+}
+
+export function hasCachedTrendline(name: string): boolean {
+    return fs.existsSync(getCachePathForTrendline(name));
 }
 
 async function getCachedMetadata(name: string): Promise<PackageMetaData> {
@@ -202,4 +209,62 @@ async function resolveMetadata(name: string): Promise<PackageMetaData> {
     fs.writeFileSync(cachePathMetdata, stringify(data), "utf-8");
 
     return data;
+}
+
+function getDownloadTrendUrl(packageName: string): string {
+    const end = new Date();
+    const start = new Date();
+    const durationMonths = 6;
+
+    // Go back 6 months
+    start.setMonth(end.getMonth() - durationMonths);
+
+    const format = (d: Date) => d.toLocaleDateString("en-CA"); // YYYY-MM-DD
+
+    return `https://api.npmjs.org/downloads/range/${format(start)}:${format(end)}/${packageName}`;
+}
+
+export async function getTrendlineData(packageName: string): Promise<TrendlineData> {
+    if (hasCachedTrendline(packageName)) {
+        return getCachedTrendlineData(packageName);
+    } else {
+        return resolveTrendlineData(packageName);
+    }
+}
+
+async function getCachedTrendlineData(packageName: string): Promise<TrendlineData> {
+    const filePath = getCachePathForTrendline(packageName);
+    const fileContent = fs.readFileSync(filePath, "utf-8");
+    const data = JSON.parse(fileContent);
+
+    return data;
+}
+
+async function resolveTrendlineData(packageName: string): Promise<TrendlineData> {
+    const downloadTrend = await cache.fetchQuery<TrendlineData>({
+        queryKey: ["trend", packageName],
+        queryFn: async () => {
+            const response = await fetch(getDownloadTrendUrl(packageName));
+            const data = await response.json();
+            const downloadsByDate: TrendlineData = {};
+
+            for (const entry of data.downloads) {
+                downloadsByDate[entry.day] = entry.downloads;
+            }
+
+            return downloadsByDate;
+        }
+    });
+
+    //save to cache
+    const cacheDirForPackage = getCacheDir(packageName);
+    const cachePathTrendline = getCachePathForTrendline(packageName);
+
+    if (!fs.existsSync(cacheDirForPackage)) {
+        fs.mkdirSync(cacheDirForPackage, { recursive: true });
+    }
+
+    fs.writeFileSync(cachePathTrendline, stringify(downloadTrend), "utf-8");
+
+    return downloadTrend;
 }

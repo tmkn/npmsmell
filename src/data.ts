@@ -1,7 +1,6 @@
 import { getCollection, getEntry, type CollectionEntry } from "astro:content";
 import bcd from "@mdn/browser-compat-data" assert { type: "json" };
 import get from "lodash/get";
-
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
@@ -11,6 +10,7 @@ import {
     obsoleteNodeDependency,
     uselessDependency
 } from "./types";
+import { calculateTrend, type Trend } from "./util";
 
 dayjs.extend(relativeTime);
 
@@ -18,6 +18,8 @@ export interface ISection {
     title: string;
     subtitle: string;
     wobble?: boolean;
+    sparkline?: number[];
+    trend?: Trend;
 }
 
 export interface IData {
@@ -39,6 +41,34 @@ export function getDetails(data: FrontMatterData): Promise<IData> {
     }
 }
 
+function sortDownloadsByDate(data: Record<string, number>): [string, number][] {
+    return Object.entries(data).sort(([a], [b]) => a.localeCompare(b));
+}
+
+function aggregateWeekly(daily: [string, number][]): number[] {
+    const weeks = new Map<string, { total: number; days: number }>();
+
+    for (const [dateStr, count] of daily) {
+        const date = new Date(dateStr);
+
+        const day = date.getUTCDay() || 7;
+        const monday = new Date(date);
+        monday.setUTCDate(date.getUTCDate() - (day - 1));
+
+        const weekKey = monday.toISOString().slice(0, 10);
+
+        const entry = weeks.get(weekKey) ?? { total: 0, days: 0 };
+        entry.total += count;
+        entry.days += 1;
+        weeks.set(weekKey, entry);
+    }
+
+    return [...weeks.entries()]
+        .filter(([, { days }]) => days === 7) // ✅ only full weeks
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([, { total }]) => total);
+}
+
 async function createSharedDetails(data: FrontMatterData): Promise<IData> {
     const baseData = baseParams.parse(data);
     const npmData = await getEntry("npmData", baseData.name);
@@ -55,13 +85,24 @@ async function createSharedDetails(data: FrontMatterData): Promise<IData> {
 
     const releaseOffset = dayjs(latestReleaseDate).fromNow();
 
+    // download trend sparkline
+    const downloadTrendData = await getEntry("trends", baseData.name);
+    const daily = sortDownloadsByDate(downloadTrendData?.data ?? {});
+    const sparkline = aggregateWeekly(daily);
+    const trend = calculateTrend(
+        daily.map(([, count]) => count),
+        8
+    );
+
     return {
         name: "foo",
         description: baseData.description,
         sections: [
             {
                 title: downloadCount.toLocaleString(),
-                subtitle: "Weekly Downloads"
+                subtitle: "Weekly Downloads",
+                sparkline,
+                trend
             },
             {
                 title: getDependencyString(dependencies),
