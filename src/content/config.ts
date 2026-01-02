@@ -1,9 +1,9 @@
 import { defineCollection } from "astro:content";
 
 import { DependencyTypes } from "../types";
-import { npmDataLoader } from "../npmDataLoader";
+import { npmDataLoader } from "../loaders/npmDataLoader";
 import { PackageMetaDataSchema } from "../npm";
-import { downloadTrendDataLoader, TrendlineSchema } from "../downloadTrendDataLoader";
+import { downloadTrendDataLoader, TrendlineSchema } from "../loaders/downloadTrendDataLoader";
 
 const dependencies = defineCollection({
     type: "content", // v2.5.0 and later

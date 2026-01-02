@@ -119,16 +119,39 @@ High usage with combined with low value, e.g.:
 
 ### How can I update the metadata?
 
-Delete the existing metadata directory:
+Metadata is cached on disk. You can force a refresh using environment flags.
+
+#### Update all metadata
+
+```
+npm run metadata:update
+```
+
+This regenerates all metadata, (internally runs `UPDATE=true astro sync`)
+
+#### Update only package data or downloads
+
+To update only a subset of metadata, use one of the loader specific commands:
+
+```
+npm run metadata:update:npm
+npm run metadata:update:trends
+```
+
+These commands will only recreate the metadata handled by the corresponding loader.
+
+#### Manual update (optional)
+
+If you prefer, you can manually delete the metadata folder:
 
 ```
 metadata/packages/
 ```
 
-Then run:
+Then rerun
 
 ```
-npm run astro sync
+npm run metadata:update
 ```
 
-This will recreate the metadata. Alternatively, you can delete only the specific metadata files you want to recreate and rerun the command.
+to regenerate everything.

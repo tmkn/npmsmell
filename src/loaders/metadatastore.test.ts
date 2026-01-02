@@ -1,7 +1,7 @@
 import path from "node:path";
 import { describe, expect, test } from "vitest";
 
-import { getCacheDir } from "./npm";
+import { getCacheDir } from "./metadatastore";
 
 describe("getCacheDir", () => {
     const baseSegments = [process.cwd(), "metadata", "packages"];

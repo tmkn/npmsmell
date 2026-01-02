@@ -17,6 +17,16 @@
             "args": ["run", "${relativeFile}"],
             "smartStep": true,
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Astro: npm run sync",
+            "type": "node",
+            "request": "launch",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run", "astro", "--", "sync"],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "skipFiles": ["<node_internals>/**"]
         }
     ]
 }

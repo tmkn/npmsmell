@@ -1,17 +1,15 @@
-import path from "node:path";
-import fs from "node:fs";
 import { QueryClient } from "@tanstack/query-core";
 import { Visitor, npmOnline, OraLogger, Package } from "@tmkn/packageanalyzer";
-import type { LoaderContext } from "astro/loaders";
 import { z } from "astro/zod";
-import stringify from "fast-json-stable-stringify";
-import type { TrendlineData } from "./downloadTrendDataLoader";
+
+import type { TrendlineData } from "./loaders/downloadTrendDataLoader";
 
 const cache = new QueryClient({
     defaultOptions: {
         queries: {
-            retry: 3,
-            staleTime: Infinity
+            retry: 5,
+            staleTime: Infinity,
+            retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 10_000)
         }
     }
 });
@@ -86,21 +84,11 @@ export const TeaserDataSchema = z.object({
 type ITeaserData = z.infer<typeof TeaserDataSchema>;
 
 export async function getWeeklyDownloads(name: string): Promise<number> {
-    const downloads = await cache.fetchQuery({
-        queryKey: ["downloads", name],
-        queryFn: async ({ signal }) => {
-            const response = await fetch(
-                `https://api.npmjs.org/downloads/point/last-week/${name}`,
-                { signal }
-            );
+    const dailyDownloads = await resolveTrendlineData(name);
 
-            const data = await response.json();
-
-            return data.downloads;
-        }
-    });
-
-    return downloads;
+    return Object.values(dailyDownloads)
+        .slice(-8, -1) // previous 7 full days, close to what NPM shows but not quite
+        .reduce((sum, count) => sum + count, 0);
 }
 
 export async function getDependencies(name: string): Promise<[number, number]> {
@@ -145,72 +133,6 @@ export const PackageMetaDataSchema = TeaserDataSchema.merge(
 
 export type PackageMetaData = z.infer<typeof PackageMetaDataSchema>;
 
-export async function getPackageMetadata(name: string): Promise<PackageMetaData> {
-    if (hasCachedMetadata(name)) {
-        return getCachedMetadata(name);
-    } else {
-        return resolveMetadata(name);
-    }
-}
-
-const CACHE_DIR = path.join(process.cwd(), "metadata", "packages");
-
-export function getCacheDir(name: string): string {
-    return path.join(CACHE_DIR, ...name.split("/"));
-}
-
-function getCachePathForMetadata(name: string): string {
-    const cacheDir = getCacheDir(name);
-
-    return path.join(cacheDir, "metadata.json");
-}
-
-function getCachePathForTrendline(name: string): string {
-    const cacheDir = getCacheDir(name);
-
-    return path.join(cacheDir, "trendline.json");
-}
-
-export function hasCachedMetadata(name: string): boolean {
-    return fs.existsSync(getCachePathForMetadata(name));
-}
-
-export function hasCachedTrendline(name: string): boolean {
-    return fs.existsSync(getCachePathForTrendline(name));
-}
-
-async function getCachedMetadata(name: string): Promise<PackageMetaData> {
-    const filePath = getCachePathForMetadata(name);
-    const fileContent = fs.readFileSync(filePath, "utf-8");
-    const data = JSON.parse(fileContent);
-
-    return data;
-}
-
-async function resolveMetadata(name: string): Promise<PackageMetaData> {
-    const teaserData = await getTeaserData(name);
-    const tree = await getDependencyTree(name);
-    const registry = await getRegistryData(name);
-
-    const data: PackageMetaData = {
-        ...teaserData,
-        tree,
-        registry
-    };
-
-    // save to cache
-    const cacheDirForPackage = getCacheDir(name);
-    const cachePathMetdata = getCachePathForMetadata(name);
-
-    if (!fs.existsSync(cacheDirForPackage)) {
-        fs.mkdirSync(cacheDirForPackage, { recursive: true });
-    }
-
-    fs.writeFileSync(cachePathMetdata, stringify(data), "utf-8");
-
-    return data;
-}
-
 function getDownloadTrendUrl(packageName: string): string {
     const end = new Date();
     const start = new Date();
@@ -224,23 +146,7 @@ function getDownloadTrendUrl(packageName: string): string {
     return `https://api.npmjs.org/downloads/range/${format(start)}:${format(end)}/${packageName}`;
 }
 
-export async function getTrendlineData(packageName: string): Promise<TrendlineData> {
-    if (hasCachedTrendline(packageName)) {
-        return getCachedTrendlineData(packageName);
-    } else {
-        return resolveTrendlineData(packageName);
-    }
-}
-
-async function getCachedTrendlineData(packageName: string): Promise<TrendlineData> {
-    const filePath = getCachePathForTrendline(packageName);
-    const fileContent = fs.readFileSync(filePath, "utf-8");
-    const data = JSON.parse(fileContent);
-
-    return data;
-}
-
-async function resolveTrendlineData(packageName: string): Promise<TrendlineData> {
+export async function resolveTrendlineData(packageName: string): Promise<TrendlineData> {
     const downloadTrend = await cache.fetchQuery<TrendlineData>({
         queryKey: ["trend", packageName],
         queryFn: async () => {
@@ -255,16 +161,6 @@ async function resolveTrendlineData(packageName: string): Promise<TrendlineData>
             return downloadsByDate;
         }
     });
-
-    //save to cache
-    const cacheDirForPackage = getCacheDir(packageName);
-    const cachePathTrendline = getCachePathForTrendline(packageName);
-
-    if (!fs.existsSync(cacheDirForPackage)) {
-        fs.mkdirSync(cacheDirForPackage, { recursive: true });
-    }
-
-    fs.writeFileSync(cachePathTrendline, stringify(downloadTrend), "utf-8");
 
     return downloadTrend;
 }
