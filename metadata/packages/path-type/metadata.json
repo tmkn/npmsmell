@@ -1,0 +1,1 @@
+{"dependencies":[0,0],"downloads":35544116,"registry":{"description":"Check if a path is a file, directory, or symlink","latestReleaseDate":"2024-07-26T10:54:40.007Z"},"tree":{"dependencies":[],"isLoop":false,"name":"path-type","subtreeCount":0,"version":"6.0.0"}}

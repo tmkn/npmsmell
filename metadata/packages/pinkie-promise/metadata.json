@@ -1,0 +1,1 @@
+{"dependencies":[1,1],"downloads":6774014,"registry":{"description":"ES2015 Promise ponyfill","latestReleaseDate":"2016-04-10T17:37:20.299Z"},"tree":{"dependencies":[{"dependencies":[],"isLoop":false,"name":"pinkie","subtreeCount":0,"version":"2.0.4"}],"isLoop":false,"name":"pinkie-promise","subtreeCount":1,"version":"2.0.1"}}

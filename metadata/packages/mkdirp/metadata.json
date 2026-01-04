@@ -1,0 +1,1 @@
+{"dependencies":[0,0],"downloads":55489349,"registry":{"description":"Recursively mkdir, like `mkdir -p`","latestReleaseDate":"2023-04-24T17:27:38.604Z"},"tree":{"dependencies":[],"isLoop":false,"name":"mkdirp","subtreeCount":0,"version":"3.0.1"}}
