@@ -1,0 +1,1 @@
+{"dependencies":[0,0],"downloads":5205224,"registry":{"description":"Recursively flatten an array or arrays.","latestReleaseDate":"2017-07-05T18:50:31.592Z"},"tree":{"dependencies":[],"isLoop":false,"name":"arr-flatten","subtreeCount":0,"version":"1.1.0"}}
