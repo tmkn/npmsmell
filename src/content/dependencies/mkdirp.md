@@ -1,5 +1,5 @@
 ---
-name: make-dir
+name: mkdirp
 description: Creates a directory and all its parent directories automatically
 type: obsolete-node
 date: 2018-10-30
